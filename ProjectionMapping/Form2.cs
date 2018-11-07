@@ -47,7 +47,7 @@ namespace ProjectionMapping
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //座標系の初期化
-            reshape();
+            reshape(WID, HEI);
 
             //テクスチャを使えるように
             GL.Enable(EnableCap.Texture2D);
@@ -157,11 +157,15 @@ namespace ProjectionMapping
         //******
 
         //GL表示座標系の変換
-        private void reshape()
+        private void reshape(int wid, int hei)
         {
-            GL.Viewport(new Rectangle(0, 0, WID, HEI));
+            int top = hei / 2;
+            int bottom = -hei / 2;
+            int left = -wid / 2;
+            int right = wid / 2;
+            GL.Viewport(new Rectangle(0, 0, wid, hei));
             GL.LoadIdentity();
-            GL.Ortho(LEFT, RIGHT, BOTTOM, TOP, -1.0, 1.0);
+            GL.Ortho(left, right, bottom, top, -1.0, 1.0);
         }
 
         //上画像の表示
