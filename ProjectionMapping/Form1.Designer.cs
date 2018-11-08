@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -62,7 +63,7 @@
             this.plotView1.Location = new System.Drawing.Point(12, 175);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(260, 80);
+            this.plotView1.Size = new System.Drawing.Size(328, 130);
             this.plotView1.TabIndex = 2;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -72,10 +73,10 @@
             // 
             // plotView2
             // 
-            this.plotView2.Location = new System.Drawing.Point(12, 297);
+            this.plotView2.Location = new System.Drawing.Point(12, 347);
             this.plotView2.Name = "plotView2";
             this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView2.Size = new System.Drawing.Size(260, 80);
+            this.plotView2.Size = new System.Drawing.Size(328, 130);
             this.plotView2.TabIndex = 3;
             this.plotView2.Text = "plotView2";
             this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -104,17 +105,27 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 282);
+            this.label3.Location = new System.Drawing.Point(10, 332);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 12);
             this.label3.TabIndex = 6;
             this.label3.Text = "周波数ヒストグラム";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 492);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 12);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "label4";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 389);
+            this.ClientSize = new System.Drawing.Size(352, 552);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -139,6 +150,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
 

@@ -16,7 +16,11 @@ namespace ProjectionMapping
     public partial class Form3 : Form
     {
         //ラインの太さ
-        int lineWidth = 5; 
+        int lineWidth = 5;
+
+        //外部から受け取るようの値
+        public double Hz = 0;//最大周波数
+        public double power = 0;//最大周波数のパワー
 
         public Form3()
         {
@@ -111,6 +115,19 @@ namespace ProjectionMapping
 
             //表示
             glControl1.SwapBuffers();
+        }
+        
+        //外部から画面を更新する
+        public void LabelRefresh()
+        {
+            
+        }
+
+        //親フォームから値を受け取る
+        public void setIndexHz(double hz, double pow)
+        {
+            Hz = hz;
+            power = pow;
         }
     }
 }

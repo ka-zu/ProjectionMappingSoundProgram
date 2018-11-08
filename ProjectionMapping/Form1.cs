@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Numerics;//Conplex型用
+
 /*
  * NAudioの入れ方
  * Nugetマネージャで
@@ -49,18 +51,28 @@ using OpenTK;
  * OxyPlot.WindowsForms.1.0.0\lib\net45内のOxyPlot.WindowsForms.dll
  * を参照する
  */
-using OxyPlot;
+using OxyPlot;//プロット用
 using OxyPlot.Axes;//プロット軸用
-using OxyPlot.Series;
+using OxyPlot.Series;//プロット用
+
+/*
+ * Math.Numericsの入れ方
+ * Nugetマネージャで
+ * Math.Numericsで検索して入れる
+ */
+using MathNet.Numerics;//窓関数用
+using MathNet.Numerics.IntegralTransforms;//フーリエ変換用
 
 namespace ProjectionMapping
 {
     public partial class Form1 : Form
     {
+        Form3 f3 = new Form3();
+
         WaveIn waveIn;
 
         //子のフォームが開いていたら
-        bool form2Opened = false;
+        bool form3Opened = false;
 
         //周波数ヒストグラムの最大値
         double maxPow = 0;
@@ -77,7 +89,7 @@ namespace ProjectionMapping
         private PlotModel _plotmodel2 = new PlotModel();
 
         //プロットの軸
-        private LinearAxis linearAxis1 = new LinearAxis
+        private LinearAxis _linearAxis1 = new LinearAxis
         {
             Position = AxisPosition.Bottom
         };
@@ -113,27 +125,42 @@ namespace ProjectionMapping
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //デバイスを探してひょうじ
+            //デバイスを探して表示
             for(int i=0; i<WaveIn.DeviceCount; i++)
             {
                 var deviceInfo = WaveIn.GetCapabilities(i);
                 this.label1.Text = String.Format("Device {0}: {1}, {2} cannels",
                     i, deviceInfo.ProductName, deviceInfo.Channels);
             }
+
+            //PlotViewの初期化
+            InitProt();
+            InitProt2();
+
+            //音声の取得
+            waveIn = new WaveIn()
+            {
+                DeviceNumber = 0,//デフォルトを指定
+            };
+
+            waveIn.DataAvailable += WaveIn_DataAvailable;
+            waveIn.WaveFormat = new WaveFormat(sampleRate: 8000, channels: 1);
+            waveIn.StartRecording();
         }
 
-        //画像に合わせて線をクリックでなぞる画面
         private void button1_Click(object sender, EventArgs e)
         {
+            //画像に合わせて線をクリックでなぞる画面
             Form2 f2 = new Form2();
 
             f2.Show();
         }
 
-        //線を引く画面
+        
         private void button2_Click(object sender, EventArgs e)
         {
-            Form3 f3 = new Form3();
+            //線を引く画面を開く
+            
 
             f3.Show();
         }
@@ -161,11 +188,116 @@ namespace ProjectionMapping
             {
                 short sample = (short)((e.Buffer[index + 1] << 8) | e.Buffer[index + 0]);
                 float sample32 = sample / 32768f;
-                //ProcessSample(sample32);
-                //ProcessSample2(sample32);
+                ProcessSample(sample32);
+                ProcessSample2(sample32);
             }
         }
 
+        //プロット部分の初期化
+        //波形
+        private void InitProt()
+        {
+            _plotmodel.Axes.Add(_linearAxis1);
+            _plotmodel.Axes.Add(_linearAxis2);
+            _plotmodel.Series.Add(_linerSeries);
+            this.plotView1.Model = _plotmodel;
+        }
+        //周波数
+        private void InitProt2()
+        {
+            _plotmodel2.Axes.Add(_linearAxis3);
+            _plotmodel2.Axes.Add(_linearAxis4);
+            _plotmodel2.Series.Add(_linerSeries2);
+            this.plotView2.Model = _plotmodel2;
+        }
+
+        //たぶん波形グラフ表示
+        private void ProcessSample(float sample)
+        {
+            //表示する範囲の波形を取得
+            _recorded.Add(sample);
+
+            if(_recorded.Count == samplingNum)
+            {
+                //プロットする点の作成
+                var points = _recorded.Select((v, index) =>
+                        new DataPoint((double)index, v)
+                        ).ToList();
+                //表示領域を消す
+                _linerSeries.Points.Clear();
+                //プロット
+                _linerSeries.Points.AddRange(points);
+                //無効な点をなんらかする
+                this.plotView1.InvalidatePlot(true);
+                //消す
+                _recorded.Clear();
+            }
+
+        }
+
+        //周波数ヒストグラム表示
+        private void ProcessSample2(float sample)
+        {
+            int windowSize = samplingNum;
+            var window = Window.Hamming(windowSize);
+
+            _recorded2.Add(sample);
+            if (_recorded2.Count == samplingNum)
+            {
+                _recorded2 = _recorded2.Select((v, i) => v * (float)window[i]).ToList();
+                Complex[] complexData = _recorded2.Select(v => new Complex(v, 0.0)).ToArray();
+
+                Fourier.Forward(complexData, FourierOptions.Matlab);
+                //Fourier.Radix2Forward(complexData.ToArray(), FourierOptions.Default);
+
+                double s = (double)windowSize * (1.0 / 8000.0);
+
+                //Take(int num)　は　配列の最初からnum番目までを見る関数
+                //Take(complexData.Count() / 2)で配列の半分までを見てる（フーリエ変換は半分で対称だから）
+                //Select()は配列を新たな配列に変換できる
+                //Select(int num1, int num2)で　num2番目の値num1を見ている　num1=complexData[num2]　みたいな感じ
+                //Select(v, index)はindex番目の値vを取り出して
+                //=> new DataPoint()でDataPoint型の(周波数,その周波数の大きさ)に変換してる
+                var points = complexData.Take(complexData.Count() / 2).Select((v, index) => new DataPoint((double)index / s,
+                                                                              Math.Sqrt(v.Real * v.Real + v.Imaginary * v.Imaginary))
+                ).ToList();
+
+                //格納されている値がその周波数の大きさ
+                //配列のインデックス / sをすることで周波数になる
+                double[] fftNum = complexData.Take(complexData.Count() / 2).Select(v => Math.Sqrt(v.Real * v.Real + v.Imaginary * v.Imaginary)).ToArray();
+
+                _linerSeries2.Points.Clear();
+                _linerSeries2.Points.AddRange(points);
+
+                this.plotView2.InvalidatePlot(true);
+                _recorded2.Clear();
+
+                //一番大きい周波数を調べる
+                for (int i = 0; i < complexData.Count() / 2; i++)
+                {
+                    if (maxPow <= fftNum[i])
+                    {
+                        maxPow = fftNum[i];
+                        maxIndex = i;
+                    }
+                    //Console.WriteLine(maxIndex.ToString() + " : " + maxPow.ToString());
+                    //表示
+                    maxHz = (maxIndex / s);
+                    this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
+                }
+
+                if (form3Opened == true)
+                {
+                    f3.setIndexHz(maxHz, maxPow);
+                    f3.LabelRefresh();
+                }
+                maxPow = 0;
+                maxIndex = 0;
+                maxHz = 0;
+            }
+
+
+        }
 
     }
     
