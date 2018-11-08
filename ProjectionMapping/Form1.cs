@@ -80,7 +80,8 @@ namespace ProjectionMapping
         int maxIndex = 0;
         //そのindexに対応する周波数
         double maxHz = 0;
-
+        //周波数ヒストグラムの合計（全体的な音の大きさ）
+        double sumHist = 0;
 
         //一度の表示する点の数
         int samplingNum = 256;
@@ -123,7 +124,7 @@ namespace ProjectionMapping
         List<float> _recorded2 = new List<float>(); //周波数ヒストグラム用
 
         //色を変えるタイミング用変数 ゼロになったら変える
-        int colorChangeTime = 50;
+        int colorChangeTime = 10;
 
         public Form1()
         {
@@ -293,21 +294,24 @@ namespace ProjectionMapping
                         maxIndex = i;
                     }
                     //Console.WriteLine(maxIndex.ToString() + " : " + maxPow.ToString());
-                    
-                    //インデックスの値を周波数にする
-                    maxHz = (maxIndex / s);
-                    //表示
-                    this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
+                    sumHist += fftNum[i];
                 }
+
+                //インデックスの値を周波数にする
+                maxHz = (maxIndex / s);
+                //表示
+                this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
+                this.label5.Text = ("ヒストグラム合計" + sumHist.ToString());
 
                 //子フォームに書き込み
                 if (form3Opened == true)
                 {
-                    f3.setIndexHz(maxHz, maxPow);//最大周波数とその大きさを送る
+                    f3.setFFTData(maxHz, maxPow, sumHist);//最大周波数とその大きさを送る
 
                     if(colorChangeTime == 0)
                     {
-                        f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
+                        //f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
+                        f3.setColorBySumHistgram(sumHist);//ヒストグラムの合計値でHLS値を設定
                         f3.convertingHLSToRGB();//HLSをRGBに変換
                         colorChangeTime = 50;
                     }
@@ -322,6 +326,7 @@ namespace ProjectionMapping
                 maxPow = 0;
                 maxIndex = 0;
                 maxHz = 0;
+                sumHist = 0;
             }
 
 

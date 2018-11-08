@@ -24,6 +24,7 @@ namespace ProjectionMapping
         //外部から受け取るようの値
         public double maxHz = 0;//最大周波数
         public double maxPower = 0;//最大周波数のパワー
+        public double sumHist = 0;//ヒストグラムの合計値
         public double[] HzHist;
 
         
@@ -145,10 +146,11 @@ namespace ProjectionMapping
         }
 
         //親フォームから値を受け取る
-        public void setIndexHz(double hz, double pow)
+        public void setFFTData(double hz, double pow, double sum)
         {
             maxHz = hz;
             maxPower = pow;
+            sumHist = sum;
         }
 
         //親フォームから周波数ヒストグラムを受け取る
@@ -164,6 +166,16 @@ namespace ProjectionMapping
             //HSV[0] = ((360 / 4000.0) * mHz);
             HSV[0] = ((360 / 4000.0) * mHz) / 360.0;
             Console.WriteLine("H : "  + HSV[0] +
+                              " S : " + HSV[1] +
+                              " V : " + HSV[2]);
+        }
+
+        //ヒストグラムの合計値をHSVのHとする
+        public void setColorBySumHistgram(double sum)
+        {
+            //大体合計値が300以上ないのでとりあえず300で割る
+            HSV[0] = ((360 / 300.0) * sum) / 360.0;
+            Console.WriteLine("H : " + HSV[0] +
                               " S : " + HSV[1] +
                               " V : " + HSV[2]);
         }
