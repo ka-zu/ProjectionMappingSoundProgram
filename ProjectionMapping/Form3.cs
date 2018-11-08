@@ -18,14 +18,25 @@ namespace ProjectionMapping
         //ラインの太さ
         int lineWidth = 5;
 
-        //縦線の数
+        //縦線の数(表示する周波数の範囲)
         const int LINE_NUM = 100;
 
         //外部から受け取るようの値
-        public double Hz = 0;//最大周波数
-        public double power = 0;//最大周波数のパワー
+        public double maxHz = 0;//最大周波数
+        public double maxPower = 0;//最大周波数のパワー
         public double[] HzHist;
 
+        
+        //線の色用　初期値はHSVのH=0に合わせる（赤）
+        //RGBA色
+        //R:赤 0~1.0 G:緑 0~1.0 B:青 0~1.0 A:透明度 0~1.0
+        public double[] RGBA = { 1.0, 0.0, 0.0, 1.0 };
+
+        //HSV色
+        //H:色相 0~360 S:彩度 0~1.0 V(,L,B):明度 0~1.0
+        public double[] HSV = { 0.0, 1.0, 0.5 };
+
+        
 
         public Form3()
         {
@@ -90,7 +101,11 @@ namespace ProjectionMapping
                 sin[i] = 50 * Math.Sin((i * 10) * Math.PI / 180);
             }
 
-            GL.Color4(OpenTK.Graphics.Color4.Red);
+            //GL.Color4(OpenTK.Graphics.Color4.Red);
+            //GL.Color4(1.0,0,0,1.0);
+            GL.Color4(RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
+
+
             GL.Begin(BeginMode.Lines);
 
             for (int i = 0; i < num; i++)
@@ -132,14 +147,79 @@ namespace ProjectionMapping
         //親フォームから値を受け取る
         public void setIndexHz(double hz, double pow)
         {
-            Hz = hz;
-            power = pow;
+            maxHz = hz;
+            maxPower = pow;
         }
 
         //親フォームから周波数ヒストグラムを受け取る
         public void setFFTHist(double[] hist)
         {
             HzHist = hist;
+        }
+
+        //最大周波数をHSVのHとする
+        public void setColorByMaxHz(double mHz)
+        {
+            //              360(°) / 4000(Hz)
+            //HSV[0] = ((360 / 4000.0) * mHz);
+            HSV[0] = ((360 / 4000.0) * mHz) / 360.0;
+            Console.WriteLine("H : "  + HSV[0] +
+                              " S : " + HSV[1] +
+                              " V : " + HSV[2]);
+        }
+
+        //HSV色をRGB色に変換
+        public void convertingHLSToRGB()
+        {
+            float h = (float)HSV[0];
+            float s = (float)HSV[1];
+            float v = (float)HSV[2];
+
+            float r = v;
+            float g = v;
+            float b = v;
+            if (s > 0.0f)
+            {
+                h *= 6.0f;
+                int i = (int)h;
+                float f = h - (float)i;
+                switch (i)
+                {
+                    default:
+                    case 0:
+                        g *= 1 - s * (1 - f);
+                        b *= 1 - s;
+                        break;
+                    case 1:
+                        r *= 1 - s * f;
+                        b *= 1 - s;
+                        break;
+                    case 2:
+                        r *= 1 - s;
+                        b *= 1 - s * (1 - f);
+                        break;
+                    case 3:
+                        r *= 1 - s;
+                        g *= 1 - s * f;
+                        break;
+                    case 4:
+                        r *= 1 - s * (1 - f);
+                        g *= 1 - s;
+                        break;
+                    case 5:
+                        g *= 1 - s;
+                        b *= 1 - s * f;
+                        break;
+                }
+            }
+
+            RGBA[0] = r;
+            RGBA[1] = g;
+            RGBA[2] = b;
+
+            Console.WriteLine("R : " + r +
+                              " G : " + g +
+                              " B : " + b);
         }
     }
 }

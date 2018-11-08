@@ -81,6 +81,7 @@ namespace ProjectionMapping
         //そのindexに対応する周波数
         double maxHz = 0;
 
+
         //一度の表示する点の数
         int samplingNum = 256;
 
@@ -120,6 +121,9 @@ namespace ProjectionMapping
         //音声データ
         List<float> _recorded = new List<float>(); //波形用
         List<float> _recorded2 = new List<float>(); //周波数ヒストグラム用
+
+        //色を変えるタイミング用変数 ゼロになったら変える
+        int colorChangeTime = 50;
 
         public Form1()
         {
@@ -278,6 +282,8 @@ namespace ProjectionMapping
                 this.plotView2.InvalidatePlot(true);
                 _recorded2.Clear();
 
+                //Console.WriteLine("complexData.Count() = " + complexData.Count() / 2);
+
                 //一番大きい周波数を調べる
                 for (int i = 0; i < complexData.Count() / 2; i++)
                 {
@@ -287,17 +293,31 @@ namespace ProjectionMapping
                         maxIndex = i;
                     }
                     //Console.WriteLine(maxIndex.ToString() + " : " + maxPow.ToString());
-                    //表示
+                    
+                    //インデックスの値を周波数にする
                     maxHz = (maxIndex / s);
+                    //表示
                     this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
                 }
 
                 //子フォームに書き込み
                 if (form3Opened == true)
                 {
-                    f3.setIndexHz(maxHz, maxPow);
-                    f3.setFFTHist(fftNum);
-                    f3.LabelRefresh();
+                    f3.setIndexHz(maxHz, maxPow);//最大周波数とその大きさを送る
+
+                    if(colorChangeTime == 0)
+                    {
+                        f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
+                        f3.convertingHLSToRGB();//HLSをRGBに変換
+                        colorChangeTime = 50;
+                    }
+                    else
+                    {
+                        colorChangeTime--;
+                    }
+                    
+                    f3.setFFTHist(fftNum);//FFTした値を送信
+                    f3.LabelRefresh();//描画の更新
                 }
                 maxPow = 0;
                 maxIndex = 0;
