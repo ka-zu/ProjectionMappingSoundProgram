@@ -18,9 +18,14 @@ namespace ProjectionMapping
         //ラインの太さ
         int lineWidth = 5;
 
+        //縦線の数
+        const int LINE_NUM = 100;
+
         //外部から受け取るようの値
         public double Hz = 0;//最大周波数
         public double power = 0;//最大周波数のパワー
+        public double[] HzHist;
+
 
         public Form3()
         {
@@ -47,11 +52,7 @@ namespace ProjectionMapping
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             //線を引く
-            //drawLines();
-
-            
-
-            
+            drawLines();
         }
 
         //******
@@ -74,7 +75,7 @@ namespace ProjectionMapping
         private void drawLines()
         {
             //引くラインの数
-            int num = 30;
+            int num = LINE_NUM;
             //ライン間のマージン
             int margin = lineWidth+5;
             //ラインの長さ
@@ -83,7 +84,7 @@ namespace ProjectionMapping
             double left = -((num-1)/2.0)*margin;
 
             //波打つように表示するテスト用
-            double[] sin = new double[30];
+            double[] sin = new double[LINE_NUM];
             for(int i =0; i < sin.Length; i++)
             {
                 sin[i] = 50 * Math.Sin((i * 10) * Math.PI / 180);
@@ -94,8 +95,8 @@ namespace ProjectionMapping
 
             for (int i = 0; i < num; i++)
             {
-                GL.Vertex2(left + (i * margin), 0);
-                GL.Vertex2(left + (i * margin), sin[i]);
+                GL.Vertex2(left + (i * margin), -100);
+                GL.Vertex2(left + (i * margin), 5*HzHist[i]-100);
             }
 
             GL.End();
@@ -120,7 +121,12 @@ namespace ProjectionMapping
         //外部から画面を更新する
         public void LabelRefresh()
         {
-            
+            //画面を消す
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            drawLines();
+            //表示
+            glControl1.SwapBuffers();
         }
 
         //親フォームから値を受け取る
@@ -128,6 +134,12 @@ namespace ProjectionMapping
         {
             Hz = hz;
             power = pow;
+        }
+
+        //親フォームから周波数ヒストグラムを受け取る
+        public void setFFTHist(double[] hist)
+        {
+            HzHist = hist;
         }
     }
 }

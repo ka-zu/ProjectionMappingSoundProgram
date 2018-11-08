@@ -84,6 +84,9 @@ namespace ProjectionMapping
         //一度の表示する点の数
         int samplingNum = 256;
 
+        //波形をFFTしたデータ格納
+        double[] fftNum;
+
         //グラフ用変数
         private PlotModel _plotmodel = new PlotModel();
         private PlotModel _plotmodel2 = new PlotModel();
@@ -151,6 +154,7 @@ namespace ProjectionMapping
         private void button1_Click(object sender, EventArgs e)
         {
             //画像に合わせて線をクリックでなぞる画面
+
             Form2 f2 = new Form2();
 
             f2.Show();
@@ -160,8 +164,9 @@ namespace ProjectionMapping
         private void button2_Click(object sender, EventArgs e)
         {
             //線を引く画面を開く
-            
 
+            form3Opened = true;
+            f3.setFFTHist(fftNum);
             f3.Show();
         }
 
@@ -264,7 +269,8 @@ namespace ProjectionMapping
 
                 //格納されている値がその周波数の大きさ
                 //配列のインデックス / sをすることで周波数になる
-                double[] fftNum = complexData.Take(complexData.Count() / 2).Select(v => Math.Sqrt(v.Real * v.Real + v.Imaginary * v.Imaginary)).ToArray();
+                //double[] fftNum = complexData.Take(complexData.Count() / 2).Select(v => Math.Sqrt(v.Real * v.Real + v.Imaginary * v.Imaginary)).ToArray();
+                fftNum = complexData.Take(complexData.Count() / 2).Select(v => Math.Sqrt(v.Real * v.Real + v.Imaginary * v.Imaginary)).ToArray();
 
                 _linerSeries2.Points.Clear();
                 _linerSeries2.Points.AddRange(points);
@@ -286,9 +292,11 @@ namespace ProjectionMapping
                     this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
                 }
 
+                //子フォームに書き込み
                 if (form3Opened == true)
                 {
                     f3.setIndexHz(maxHz, maxPow);
+                    f3.setFFTHist(fftNum);
                     f3.LabelRefresh();
                 }
                 maxPow = 0;
