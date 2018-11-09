@@ -33,7 +33,7 @@
             // 
             // glControl1
             // 
-            this.glControl1.BackColor = System.Drawing.Color.Black;
+            this.glControl1.BackColor = System.Drawing.Color.White;
             this.glControl1.Location = new System.Drawing.Point(0, 0);
             this.glControl1.Margin = new System.Windows.Forms.Padding(0);
             this.glControl1.Name = "glControl1";

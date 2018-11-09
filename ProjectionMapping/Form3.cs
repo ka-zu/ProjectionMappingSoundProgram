@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 using OpenTK.Graphics.OpenGL;
 
-//音で上下するバーを投影する部分
+//音で上下するバーを投影する部分(下画面)
 namespace ProjectionMapping
 {
     public partial class Form3 : Form
     {
         //ラインの太さ
-        public float lineWidth = 5;
+        public float lineWidth = 20;
 
         //縦線の数(表示する周波数の範囲)
-        const int LINE_NUM = 2;
+        const int LINE_NUM = 40;
 
         //外部から受け取るようの値
         public double maxHz = 0;//最大周波数
@@ -51,8 +51,6 @@ namespace ProjectionMapping
             GL.Enable(EnableCap.Texture2D);
 
             reshape(glControl1.Width, glControl1.Height);
-
-            GL.Enable(EnableCap.LineSmooth);
         }
 
         private void glControl1_Load(object sender, EventArgs e)
@@ -122,7 +120,6 @@ namespace ProjectionMapping
             {
                 GL.Begin(BeginMode.Polygon);
 
-
                 GL.Vertex2(left + (i * margin), -100);//左下
                 GL.Vertex2(left + (i * margin) + lineWidth, -100);//右下
                 GL.Vertex2(left + (i * margin) + lineWidth, 5 * HzHist[i] - 100);//右上
@@ -149,16 +146,15 @@ namespace ProjectionMapping
         }
         
         //外部から画面を更新する
-        public void LabelRefresh()
+        public void refresh()
         {
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             drawLines();
+
             //表示
             glControl1.SwapBuffers();
-
-            
         }
 
         //親フォームから値を受け取る
@@ -182,8 +178,8 @@ namespace ProjectionMapping
             //HSV[0] = ((360 / 4000.0) * mHz);
             HSV[0] = ((360 / 4000.0) * mHz) / 360.0;
             Console.WriteLine("H : "  + HSV[0] +
-                              " S : " + HSV[1] +
-                              " V : " + HSV[2]);
+                             " S : " + HSV[1] +
+                             " V : " + HSV[2]);
         }
 
         //ヒストグラムの合計値をHSVのHとする
@@ -192,8 +188,8 @@ namespace ProjectionMapping
             //大体合計値が300以上ないのでとりあえず300で割る
             HSV[0] = ((360 / 300.0) * sum) / 360.0;
             Console.WriteLine("H : " + HSV[0] +
-                              " S : " + HSV[1] +
-                              " V : " + HSV[2]);
+                             " S : " + HSV[1] +
+                             " V : " + HSV[2]);
         }
 
         //HSV色をRGB色に変換
