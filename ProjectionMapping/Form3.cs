@@ -16,7 +16,7 @@ namespace ProjectionMapping
     public partial class Form3 : Form
     {
         //ラインの太さ
-        public float lineWidth = 20;
+        public float lineWidth = 30;
 
         //縦線の数(表示する周波数の範囲)
         const int LINE_NUM = 40;
@@ -152,6 +152,11 @@ namespace ProjectionMapping
         //外部から画面を更新する
         public void refresh()
         {
+            //
+            //複数ウィンドウを処理するのに必須！！！！！OpenGL処理を自分に回す
+            //
+            glControl1.MakeCurrent();
+
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
@@ -181,7 +186,7 @@ namespace ProjectionMapping
         {
             //              360(°) / 4000(Hz)
             //HSV[0] = ((360 / 4000.0) * mHz);
-            HSV[0] = ((360 / 4000.0) * mHz) / 360.0;
+            HSV[0] = ((360 / 2000.0) * mHz) / 360.0 + 90/360.0;//90°足す(スタートを緑にするため)
             Console.WriteLine("H : "  + HSV[0] +
                              " S : " + HSV[1] +
                              " V : " + HSV[2]);
@@ -191,7 +196,7 @@ namespace ProjectionMapping
         public void setColorBySumHistgram(double sum)
         {
             //大体合計値が300以上ないのでとりあえず300で割る
-            HSV[0] = ((360 / 300.0) * sum) / 360.0;
+            HSV[0] = ((360 / 500.0) * sum) / 360.0 + 90 / 360.0;//90°足す(スタートを緑にするため)
             Console.WriteLine("H : " + HSV[0] +
                              " S : " + HSV[1] +
                              " V : " + HSV[2]);
