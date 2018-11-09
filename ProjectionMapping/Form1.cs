@@ -310,8 +310,19 @@ namespace ProjectionMapping
 
                     if(colorChangeTime == 0)
                     {
-                        //f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
-                        f3.setColorBySumHistgram(sumHist);//ヒストグラムの合計値でHLS値を設定
+                        if (radioButton1.Checked == true)//最大周波数にチェック
+                        {
+                            f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
+                        }
+                        else if(radioButton2.Checked == true)//ヒストグラム合計にチェック
+                        {
+                            f3.setColorBySumHistgram(sumHist);//ヒストグラムの合計値でHLS値を設定
+                        }
+                        else
+                        {
+                            f3.setColorByMaxHz(maxHz);//最大周波数でHLS値を設定
+                        }
+                            
                         f3.convertingHLSToRGB();//HLSをRGBに変換
                         colorChangeTime = 50;
                     }

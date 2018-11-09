@@ -37,8 +37,6 @@ namespace ProjectionMapping
         //H:色相 0~360 S:彩度 0~1.0 V(,L,B):明度 0~1.0
         public double[] HSV = { 0.0, 1.0, 0.5 };
 
-        
-
         public Form3()
         {
             InitializeComponent();
