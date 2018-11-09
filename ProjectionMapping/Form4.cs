@@ -317,6 +317,11 @@ namespace ProjectionMapping
         //外部から画面を更新する
         public void refresh()
         {
+            //
+            //複数ウィンドウを処理するのに必須！！！！！OpenGL処理を自分に回す
+            //
+            glControl1.MakeCurrent();
+
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
