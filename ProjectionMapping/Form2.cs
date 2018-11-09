@@ -206,6 +206,15 @@ namespace ProjectionMapping
 
             Point point = new Point();
 
+            //ファイルが存在しない場合適当な値を入れて終わる
+            if (File.Exists(@"click.txt") == false)
+            {
+                Console.WriteLine("読み込むファイルが存在しません");
+                pList.Add(new Point(0, 0));
+                pList.Add(new Point(100, 100));
+                return;
+            }
+
             //usingを使うことで自動Close
             using (var rea = new StreamReader(@"click.txt"))
             {
