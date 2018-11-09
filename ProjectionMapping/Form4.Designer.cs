@@ -40,6 +40,8 @@
             this.glControl1.Size = new System.Drawing.Size(1920, 1080);
             this.glControl1.TabIndex = 0;
             this.glControl1.VSync = false;
+            this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
+            this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             // 
             // Form4
             // 
@@ -49,7 +51,9 @@
             this.Controls.Add(this.glControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form4";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form4";
+            this.Load += new System.EventHandler(this.Form4_Load);
             this.ResumeLayout(false);
 
         }
