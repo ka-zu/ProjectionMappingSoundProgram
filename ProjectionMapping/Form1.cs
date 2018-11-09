@@ -303,6 +303,8 @@ namespace ProjectionMapping
                 this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
                 this.label5.Text = ("ヒストグラム合計" + sumHist.ToString());
 
+                
+
                 //子フォームに書き込み
                 if (form3Opened == true)
                 {
@@ -332,6 +334,9 @@ namespace ProjectionMapping
                     }
                     
                     f3.setFFTHist(fftNum);//FFTした値を送信
+
+                    //フォームが閉じられていたらしない
+                    if(f3.IsDisposed == true) { form3Opened = false; return; }
                     f3.LabelRefresh();//描画の更新
                 }
                 maxPow = 0;
