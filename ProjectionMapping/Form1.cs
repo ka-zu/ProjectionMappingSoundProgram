@@ -353,8 +353,15 @@ namespace ProjectionMapping
                     f3.setFFTHist(fftNum);//FFTした値を送信
 
                     //フォームが閉じられていたらしない
-                    if(f3.IsDisposed == true) { isForm3Open = false; return; }
-                    f3.refresh();//描画の更新
+                    if(f3.IsDisposed == true)
+                    {
+                        isForm3Open = false;
+                    }
+                    else
+                    {
+                        f3.refresh();//描画の更新
+                    }
+                    
                 }
 
                 //上窓表示画面に書き込み
@@ -374,8 +381,14 @@ namespace ProjectionMapping
                     }
 
                     //フォームが閉じられていたらしない
-                    if (f4.IsDisposed == true) { isForm4Open = false; return; }
-                    f4.refresh();//描画の更新
+                    if (f4.IsDisposed == true)
+                    { isForm4Open = false;
+                    }
+                    else
+                    {
+                        f4.refresh();//描画の更新
+                    }
+                    
                 }
 
 
