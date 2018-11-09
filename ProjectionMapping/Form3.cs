@@ -47,10 +47,12 @@ namespace ProjectionMapping
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+
             //テクスチャを使えるように
             GL.Enable(EnableCap.Texture2D);
 
             reshape(glControl1.Width, glControl1.Height);
+
         }
 
         private void glControl1_Load(object sender, EventArgs e)
@@ -58,6 +60,7 @@ namespace ProjectionMapping
 
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
+
 
             //線を引く
             drawLines();
@@ -139,6 +142,7 @@ namespace ProjectionMapping
             GL.Vertex2(0, 50);
             GL.End();*/
 
+            drawBackGround();
             drawLines();
 
             //表示
@@ -151,6 +155,7 @@ namespace ProjectionMapping
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
+            drawBackGround();
             drawLines();
 
             //表示
@@ -244,6 +249,26 @@ namespace ProjectionMapping
             Console.WriteLine("R : " + r +
                              " G : " + g +
                              " B : " + b);
+        }
+
+        //背景を描く
+        private void drawBackGround()
+        {
+            int top = glControl1.Height / 2;
+            int bottom = -glControl1.Height / 2;
+            int left = -glControl1.Width / 2;
+            int right = glControl1.Width / 2;
+
+            GL.Color4(OpenTK.Graphics.Color4.White);
+
+            GL.Begin(BeginMode.Polygon);
+
+            GL.Vertex2(left, bottom);//左下
+            GL.Vertex2(right, bottom);//右下
+            GL.Vertex2(right, top);//右上
+            GL.Vertex2(left, top);//左上
+
+            GL.End();
         }
     }
 }
