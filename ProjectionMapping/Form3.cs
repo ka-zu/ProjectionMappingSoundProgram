@@ -16,10 +16,10 @@ namespace ProjectionMapping
     public partial class Form3 : Form
     {
         //ラインの太さ
-        int lineWidth = 5;
+        public float lineWidth = 5;
 
         //縦線の数(表示する周波数の範囲)
-        const int LINE_NUM = 100;
+        const int LINE_NUM = 2;
 
         //外部から受け取るようの値
         public double maxHz = 0;//最大周波数
@@ -52,7 +52,7 @@ namespace ProjectionMapping
 
             reshape(glControl1.Width, glControl1.Height);
 
-            GL.LineWidth(lineWidth);
+            GL.Enable(EnableCap.LineSmooth);
         }
 
         private void glControl1_Load(object sender, EventArgs e)
@@ -87,7 +87,7 @@ namespace ProjectionMapping
             //引くラインの数
             int num = LINE_NUM;
             //ライン間のマージン
-            int margin = lineWidth+5;
+            int margin = (int)lineWidth + 5;
             //ラインの長さ
             int len = 50;
             //ラインの左端の位置座標　-1 * 太さ * (ラインの数/2)
@@ -104,6 +104,8 @@ namespace ProjectionMapping
             //GL.Color4(1.0,0,0,1.0);
             GL.Color4(RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
 
+            //線の太さ
+            /*GL.LineWidth(lineWidth);
 
             GL.Begin(BeginMode.Lines);
 
@@ -113,7 +115,21 @@ namespace ProjectionMapping
                 GL.Vertex2(left + (i * margin), 5*HzHist[i]-100);
             }
 
-            GL.End();
+            GL.End();*/
+
+            //ラインの太さ上限が小さかったので四角で描く
+            for (int i = 0; i < num; i++)
+            {
+                GL.Begin(BeginMode.Polygon);
+
+
+                GL.Vertex2(left + (i * margin), -100);//左下
+                GL.Vertex2(left + (i * margin) + lineWidth, -100);//右下
+                GL.Vertex2(left + (i * margin) + lineWidth, 5 * HzHist[i] - 100);//右上
+                GL.Vertex2(left + (i * margin), 5 * HzHist[i] - 100);//左上
+
+                GL.End();
+            }
         }
 
 
@@ -141,6 +157,8 @@ namespace ProjectionMapping
             drawLines();
             //表示
             glControl1.SwapBuffers();
+
+            
         }
 
         //親フォームから値を受け取る
@@ -228,8 +246,8 @@ namespace ProjectionMapping
             RGBA[2] = b;
 
             Console.WriteLine("R : " + r +
-                              " G : " + g +
-                              " B : " + b);
+                             " G : " + g +
+                             " B : " + b);
         }
     }
 }
