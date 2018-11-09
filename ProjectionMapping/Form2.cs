@@ -30,12 +30,11 @@ namespace ProjectionMapping
         int px = 1;
         IntPtr[] textureData;
 
-        //読み込んだ座標を保存
+        //読み込んだ座標を保存 リストにしたのはクリックする回数がわからないから
         List<Point> pList = new List<Point>();
+
         int texture;
         
-
-
         public Form2()
         {
             InitializeComponent();
@@ -276,7 +275,7 @@ namespace ProjectionMapping
         private void deleteList()
         {
             Console.WriteLine("リスト削除");
-            if(pList.Count() <= 2)
+            if(pList.Count() < 2)
             {
                 Console.WriteLine("リストの数が2以下です");
                 return;
