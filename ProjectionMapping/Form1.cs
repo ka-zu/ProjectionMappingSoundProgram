@@ -68,11 +68,13 @@ namespace ProjectionMapping
     public partial class Form1 : Form
     {
         Form3 f3 = new Form3();
+        Form4 f4 = new Form4();
 
         WaveIn waveIn;
 
         //子のフォームが開いていたら
-        bool form3Opened = false;
+        bool isForm3Open = false;
+        bool isForm4Open = false;
 
         //周波数ヒストグラムの最大値
         double maxPow = 0;
@@ -123,8 +125,11 @@ namespace ProjectionMapping
         List<float> _recorded = new List<float>(); //波形用
         List<float> _recorded2 = new List<float>(); //周波数ヒストグラム用
 
+        const int COLOR_TIMER = 50;
+
         //色を変えるタイミング用変数 ゼロになったら変える
-        int colorChangeTime = 10;
+        int colorChangeTime1 = COLOR_TIMER;
+        int colorChangeTime2 = COLOR_TIMER;
 
         public Form1()
         {
@@ -170,12 +175,20 @@ namespace ProjectionMapping
         {
             //線を引く画面を開く
 
-            form3Opened = true;
+            isForm3Open = true;
             f3.setFFTHist(fftNum);
             f3.Show();
         }
 
-        
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //上投影画面
+            isForm4Open = true;
+            f4.Show();
+        }
+
+
+
 
         private void plotView2_Click(object sender, EventArgs e)
         {
@@ -303,14 +316,17 @@ namespace ProjectionMapping
                 this.label4.Text = ("最大周波数" + maxHz.ToString() + " : " + maxPow.ToString());
                 this.label5.Text = ("ヒストグラム合計" + sumHist.ToString());
 
-                
+                //
+                //以下子フォーム操作系
+                //
 
-                //子フォームに書き込み
-                if (form3Opened == true)
+                //バー表示画面に書き込み
+                if (isForm3Open == true)
                 {
                     f3.setFFTData(maxHz, maxPow, sumHist);//最大周波数とその大きさを送る
 
-                    if(colorChangeTime == 0)
+                    //色変えタイミング
+                    if (colorChangeTime1 == 0)
                     {
                         if (radioButton1.Checked == true)//最大周波数にチェック
                         {
@@ -326,19 +342,44 @@ namespace ProjectionMapping
                         }
                             
                         f3.convertingHLSToRGB();//HLSをRGBに変換
-                        colorChangeTime = 50;
+
+                        colorChangeTime1 = COLOR_TIMER;
                     }
                     else
                     {
-                        colorChangeTime--;
+                        colorChangeTime1--;
                     }
                     
                     f3.setFFTHist(fftNum);//FFTした値を送信
 
                     //フォームが閉じられていたらしない
-                    if(f3.IsDisposed == true) { form3Opened = false; return; }
-                    f3.LabelRefresh();//描画の更新
+                    if(f3.IsDisposed == true) { isForm3Open = false; return; }
+                    f3.refresh();//描画の更新
                 }
+
+                //上窓表示画面に書き込み
+                if (isForm4Open == true)
+                {
+
+                    //色変えタイミング
+                    if (colorChangeTime2 == 0)
+                    {
+                        f4.RGBA = f3.RGBA;
+
+                        colorChangeTime2 = COLOR_TIMER;
+                    }
+                    else
+                    {
+                        colorChangeTime2--;
+                    }
+
+                    //フォームが閉じられていたらしない
+                    if (f4.IsDisposed == true) { isForm4Open = false; return; }
+                    f4.refresh();//描画の更新
+                }
+
+
+
                 maxPow = 0;
                 maxIndex = 0;
                 maxHz = 0;
@@ -348,6 +389,7 @@ namespace ProjectionMapping
 
         }
 
+        
     }
     
 }
