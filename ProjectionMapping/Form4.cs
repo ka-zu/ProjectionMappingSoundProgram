@@ -56,6 +56,11 @@ namespace ProjectionMapping
             window4FromTxt();
         }
 
+        private void glControl1_Load(object sender, EventArgs e)
+        {
+            GL.ClearColor(glControl1.BackColor);
+        }
+
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
             //消去
@@ -273,10 +278,7 @@ namespace ProjectionMapping
             }
         }
 
-        private void glControl1_Load(object sender, EventArgs e)
-        {
-            GL.ClearColor(glControl1.BackColor);
-        }
+        
 
         /// <summary>
         /// 窓ポリゴンの描画

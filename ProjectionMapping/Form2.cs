@@ -64,7 +64,7 @@ namespace ProjectionMapping
                 TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
 
             //テクスチャにする画像
-            Bitmap texPic = new Bitmap(@"top.png");
+            Bitmap texPic = new Bitmap(@"left.png");
 
             //png画像の反転を直す
             texPic.RotateFlip(RotateFlipType.RotateNoneFlipY);

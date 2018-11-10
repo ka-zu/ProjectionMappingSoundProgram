@@ -69,12 +69,14 @@ namespace ProjectionMapping
     {
         Form3 f3 = new Form3();
         Form4 f4 = new Form4();
+        Form5 f5 = new Form5();
 
         WaveIn waveIn;
 
         //子のフォームが開いていたら
         bool isForm3Open = false;
         bool isForm4Open = false;
+        bool isForm5Open = false;
 
         //周波数ヒストグラムの最大値
         double maxPow = 0;
@@ -130,6 +132,7 @@ namespace ProjectionMapping
         //色を変えるタイミング用変数 ゼロになったら変える
         int colorChangeTime1 = COLOR_TIMER;
         int colorChangeTime2 = COLOR_TIMER;
+        int colorChangeTime3 = COLOR_TIMER;
 
         public Form1()
         {
@@ -178,17 +181,25 @@ namespace ProjectionMapping
             isForm3Open = true;
             f3.setFFTHist(fftNum);
             f3.Show();
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             //上投影画面
+
             isForm4Open = true;
             f4.Show();
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            //左画面
 
+            isForm5Open = true;
+            f5.Show();
 
+        }
 
         private void plotView2_Click(object sender, EventArgs e)
         {
@@ -389,6 +400,34 @@ namespace ProjectionMapping
                         f4.refresh();//描画の更新
                     }
                     
+                }
+
+                //上窓表示画面に書き込み
+                if (isForm5Open == true)
+                {
+
+                    //色変えタイミング
+                    if (colorChangeTime3 == 0)
+                    {
+                        f5.RGBA = f3.RGBA;
+
+                        colorChangeTime3 = COLOR_TIMER;
+                    }
+                    else
+                    {
+                        colorChangeTime3--;
+                    }
+
+                    //フォームが閉じられていたらしない
+                    if (f5.IsDisposed == true)
+                    {
+                        isForm5Open = false;
+                    }
+                    else
+                    {
+                        f5.refresh();//描画の更新
+                    }
+
                 }
 
 
