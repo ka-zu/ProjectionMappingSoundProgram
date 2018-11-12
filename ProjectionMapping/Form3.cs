@@ -37,6 +37,14 @@ namespace ProjectionMapping
         //H:色相 0~360 S:彩度 0~1.0 V(,L,B):明度 0~1.0
         public double[] HSV = { 0.0, 1.0, 0.5 };
 
+        //パーティクルを表示する座標を格納する乱数
+        Random rnd = new Random();
+
+        //花火パーティクルを複数生成できるようにするためのリスト
+        List<Fireworks> fList = new List<Fireworks>();
+
+        double t = 0;
+
         public Form3()
         {
             InitializeComponent();
@@ -129,8 +137,12 @@ namespace ProjectionMapping
                 GL.Vertex2(left + (i * margin), 5 * HzHist[i] - 100);//左上
 
                 GL.End();
+
+
             }
         }
+
+
 
 
         //絵かきはこの中
@@ -142,8 +154,14 @@ namespace ProjectionMapping
             GL.Vertex2(0, 50);
             GL.End();*/
 
+            //
+            //複数ウィンドウを処理するのに必須！！！！！OpenGL処理を自分に回す
+            //
+            glControl1.MakeCurrent();
+
             drawBackGround();
             drawLines();
+            
 
             //表示
             glControl1.SwapBuffers();
@@ -152,6 +170,9 @@ namespace ProjectionMapping
         //外部から画面を更新する
         public void refresh()
         {
+
+            generateParticle();
+
             //
             //複数ウィンドウを処理するのに必須！！！！！OpenGL処理を自分に回す
             //
@@ -162,9 +183,12 @@ namespace ProjectionMapping
 
             drawBackGround();
             drawLines();
+            drawParticle();
 
             //表示
             glControl1.SwapBuffers();
+
+            removeParticle();
         }
 
         //親フォームから値を受け取る
@@ -187,9 +211,9 @@ namespace ProjectionMapping
             //              360(°) / 4000(Hz)
             //HSV[0] = ((360 / 4000.0) * mHz);
             HSV[0] = ((360 / 2000.0) * mHz) / 360.0 + 90/360.0;//90°足す(スタートを緑にするため)
-            Console.WriteLine("H : "  + HSV[0] +
+            /*Console.WriteLine("H : "  + HSV[0] +
                              " S : " + HSV[1] +
-                             " V : " + HSV[2]);
+                             " V : " + HSV[2]);*/
         }
 
         //ヒストグラムの合計値をHSVのHとする
@@ -197,9 +221,9 @@ namespace ProjectionMapping
         {
             //大体合計値が300以上ないのでとりあえず300で割る
             HSV[0] = ((360 / 500.0) * sum) / 360.0 + 90 / 360.0;//90°足す(スタートを緑にするため)
-            Console.WriteLine("H : " + HSV[0] +
+            /*Console.WriteLine("H : " + HSV[0] +
                              " S : " + HSV[1] +
-                             " V : " + HSV[2]);
+                             " V : " + HSV[2]);*/
         }
 
         //HSV色をRGB色に変換
@@ -251,15 +275,15 @@ namespace ProjectionMapping
             RGBA[1] = g;
             RGBA[2] = b;
 
-            Console.WriteLine("R : " + r +
+            /*Console.WriteLine("R : " + r +
                              " G : " + g +
-                             " B : " + b);
+                             " B : " + b);*/
         }
 
         //背景を描く
         private void drawBackGround()
         {
-            int top = glControl1.Height / 2;
+            /*int top = glControl1.Height / 2;
             int bottom = -glControl1.Height / 2;
             int left = -glControl1.Width / 2;
             int right = glControl1.Width / 2;
@@ -273,7 +297,38 @@ namespace ProjectionMapping
             GL.Vertex2(right, top);//右上
             GL.Vertex2(left, top);//左上
 
-            GL.End();
+            GL.End();*/
+
+            
         }
+
+        //音をチェックしてパーティクルを生み出す
+        private void generateParticle()
+        {
+            
+
+            if(sumHist >50)
+            {
+                fList.Add(new Fireworks(rnd.Next(-glControl1.Width/2+300, glControl1.Width / 2-300), 100, rnd));
+                Console.WriteLine("generate now : " + fList.Count());
+            }
+        }
+
+        //パーティクルを描く
+        private void drawParticle()
+        {
+            foreach(Fireworks fw in fList)
+            {
+                fw.draw();
+            }
+        }
+
+        //存在しないパーティクルを消す
+        private void removeParticle()
+        {
+            //存在しなくなったものを消すラムダ式
+            fList.RemoveAll(fw => fw.isExist == false);
+        }
+
     }
 }

@@ -30,11 +30,16 @@ namespace ProjectionMapping
         int px = 1;
         IntPtr[] textureData;
 
+        
+
         //読み込んだ座標を保存 リストにしたのはクリックする回数がわからないから
         List<Point> pList = new List<Point>();
 
+        //テクスチャバッファ
         int texture;
+
         
+
         public Form2()
         {
             InitializeComponent();
@@ -119,7 +124,6 @@ namespace ProjectionMapping
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
         }
 
         private void glControl1_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
