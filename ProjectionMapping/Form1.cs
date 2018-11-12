@@ -70,6 +70,7 @@ namespace ProjectionMapping
         Form3 f3 = new Form3();
         Form4 f4 = new Form4();
         Form5 f5 = new Form5();
+        Form6 f6 = new Form6();
 
         WaveIn waveIn;
 
@@ -77,6 +78,8 @@ namespace ProjectionMapping
         bool isForm3Open = false;
         bool isForm4Open = false;
         bool isForm5Open = false;
+        bool isForm6Open = false;
+
 
         //周波数ヒストグラムの最大値
         double maxPow = 0;
@@ -133,6 +136,7 @@ namespace ProjectionMapping
         int colorChangeTime1 = COLOR_TIMER;
         int colorChangeTime2 = COLOR_TIMER;
         int colorChangeTime3 = COLOR_TIMER;
+        int colorChangeTime4 = COLOR_TIMER;
 
         public Form1()
         {
@@ -199,6 +203,14 @@ namespace ProjectionMapping
             isForm5Open = true;
             f5.Show();
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            //左画面
+
+            isForm6Open = true;
+            f6.Show();
         }
 
         private void plotView2_Click(object sender, EventArgs e)
@@ -430,6 +442,61 @@ namespace ProjectionMapping
 
                 }
 
+                //上窓表示画面に書き込み
+                if (isForm5Open == true)
+                {
+
+                    //色変えタイミング
+                    if (colorChangeTime3 == 0)
+                    {
+                        f5.RGBA = f3.RGBA;
+
+                        colorChangeTime3 = COLOR_TIMER;
+                    }
+                    else
+                    {
+                        colorChangeTime3--;
+                    }
+
+                    //フォームが閉じられていたらしない
+                    if (f5.IsDisposed == true)
+                    {
+                        isForm5Open = false;
+                    }
+                    else
+                    {
+                        f5.refresh();//描画の更新
+                    }
+
+                }
+
+                //上窓表示画面に書き込み
+                if (isForm6Open == true)
+                {
+
+                    //色変えタイミング
+                    if (colorChangeTime4 == 0)
+                    {
+                        f6.RGBA = f3.RGBA;
+
+                        colorChangeTime4 = COLOR_TIMER;
+                    }
+                    else
+                    {
+                        colorChangeTime4--;
+                    }
+
+                    //フォームが閉じられていたらしない
+                    if (f6.IsDisposed == true)
+                    {
+                        isForm6Open = false;
+                    }
+                    else
+                    {
+                        f6.refresh();//描画の更新
+                    }
+
+                }
 
 
                 maxPow = 0;

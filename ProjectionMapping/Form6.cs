@@ -14,9 +14,10 @@ using System.IO;
 namespace ProjectionMapping
 {
     /// <summary>
-    /// 左窓投影ウィンドウ
+    /// 右側窓表示用
+    /// 実際は左側を反転したもの
     /// </summary>
-    public partial class Form5 : Form
+    public partial class Form6 : Form
     {
         //窓ポリゴン座標格納用
         //中のListのインスタンスはできていないので注意
@@ -27,12 +28,12 @@ namespace ProjectionMapping
         //R:赤 0~1.0 G:緑 0~1.0 B:青 0~1.0 A:透明度 0~1.0
         public double[] RGBA = { 1.0, 0.0, 0.0, 1.0 };
 
-        public Form5()
+        public Form6()
         {
             InitializeComponent();
         }
 
-        private void Form5_Load(object sender, EventArgs e)
+        private void Form6_Load(object sender, EventArgs e)
         {
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
@@ -40,17 +41,16 @@ namespace ProjectionMapping
             //テクスチャを使えるように
             GL.Enable(EnableCap.Texture2D);
 
-            reshape(glControl1.Width, glControl1.Height);
+            reshape(-glControl1.Width, glControl1.Height);
 
             makeListInstance();
 
             windowsFromTxt();
         }
 
-
         private void glControl1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e)
@@ -95,7 +95,7 @@ namespace ProjectionMapping
         /// </summary>
         private void makeListInstance()
         {
-            for(int i=0; i < winLists.Length; i++)
+            for (int i = 0; i < winLists.Length; i++)
             {
                 winLists[i] = new List<Point>();
             }
@@ -106,12 +106,12 @@ namespace ProjectionMapping
         /// </summary>
         private void windowsFromTxt()
         {
-            for(int i=0; i < winLists.Length; i++)
+            for (int i = 0; i < winLists.Length; i++)
             {
                 //ファイル名
-                String str = "./window_left" + (i+1).ToString() + ".txt";
+                String str = "./window_left" + (i + 1).ToString() + ".txt";
 
-                Console.WriteLine("窓" + (i+1) +"読み込み");
+                Console.WriteLine("窓" + (i + 1) + "読み込み");
 
                 int x = 0;
                 int y = 0;
@@ -189,5 +189,7 @@ namespace ProjectionMapping
             //表示
             glControl1.SwapBuffers();
         }
+
+        
     }
 }

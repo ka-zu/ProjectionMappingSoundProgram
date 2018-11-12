@@ -30,7 +30,7 @@ namespace ProjectionMapping
         
         //線の色用　初期値はHSVのH=0に合わせる（赤）
         //RGBA色
-        //R:赤 0~1.0 G:緑 0~1.0 B:青 0~1.0 A:透明度 0~1.0
+        //R:赤 0~1.0 G:緑 0~1.0 B:青 0~1.0 A:透明度 0~1.0s
         public double[] RGBA = { 1.0, 0.0, 0.0, 1.0 };
 
         //HSV色
