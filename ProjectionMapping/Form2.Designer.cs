@@ -29,9 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.glControl1 = new OpenTK.GLControl();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.glControl1 = new OpenTK.GLControl();
             this.SuspendLayout();
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // glControl1
             // 
@@ -46,10 +50,6 @@
             this.glControl1.Click += new System.EventHandler(this.glControl1_Click);
             this.glControl1.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl1_Paint);
             this.glControl1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.glControl1_KeyPress);
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Form2
             // 
@@ -67,8 +67,7 @@
         }
 
         #endregion
-
-        private OpenTK.GLControl glControl1;
         private System.Windows.Forms.Timer timer1;
+        private OpenTK.GLControl glControl1;
     }
 }
