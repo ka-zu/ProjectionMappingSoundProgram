@@ -130,7 +130,7 @@ namespace ProjectionMapping
         List<float> _recorded = new List<float>(); //波形用
         List<float> _recorded2 = new List<float>(); //周波数ヒストグラム用
 
-        const int COLOR_TIMER = 50;
+        const int COLOR_TIMER = 0;
 
         //色を変えるタイミング用変数 ゼロになったら変える
         int colorChangeTime1 = COLOR_TIMER;
@@ -394,12 +394,15 @@ namespace ProjectionMapping
                     //色変えタイミング
                     if (colorChangeTime2 == 0)
                     {
-                        f4.RGBA = f3.RGBA;
+                        f4.RGBA[0] = f3.RGBA[0];
+                        f4.RGBA[1] = f3.RGBA[1];
+                        f4.RGBA[2] = f3.RGBA[2];
 
                         colorChangeTime2 = COLOR_TIMER;
                     }
                     else
                     {
+                        f4.backBaseColor();
                         colorChangeTime2--;
                     }
 
@@ -414,14 +417,16 @@ namespace ProjectionMapping
                     
                 }
 
-                //上窓表示画面に書き込み
+                //左窓表示画面に書き込み
                 if (isForm5Open == true)
                 {
 
                     //色変えタイミング
                     if (colorChangeTime3 == 0)
                     {
-                        f5.RGBA = f3.RGBA;
+                        f5.RGBA[0] = f3.RGBA[0];
+                        f5.RGBA[1] = f3.RGBA[1];
+                        f5.RGBA[2] = f3.RGBA[2];
 
                         colorChangeTime3 = COLOR_TIMER;
                     }
@@ -442,42 +447,16 @@ namespace ProjectionMapping
 
                 }
 
-                //上窓表示画面に書き込み
-                if (isForm5Open == true)
-                {
-
-                    //色変えタイミング
-                    if (colorChangeTime3 == 0)
-                    {
-                        f5.RGBA = f3.RGBA;
-
-                        colorChangeTime3 = COLOR_TIMER;
-                    }
-                    else
-                    {
-                        colorChangeTime3--;
-                    }
-
-                    //フォームが閉じられていたらしない
-                    if (f5.IsDisposed == true)
-                    {
-                        isForm5Open = false;
-                    }
-                    else
-                    {
-                        f5.refresh();//描画の更新
-                    }
-
-                }
-
-                //上窓表示画面に書き込み
+                //右窓表示画面に書き込み
                 if (isForm6Open == true)
                 {
 
                     //色変えタイミング
                     if (colorChangeTime4 == 0)
                     {
-                        f6.RGBA = f3.RGBA;
+                        f6.RGBA[0] = f3.RGBA[0];
+                        f6.RGBA[1] = f3.RGBA[1];
+                        f6.RGBA[2] = f3.RGBA[2];
 
                         colorChangeTime4 = COLOR_TIMER;
                     }
