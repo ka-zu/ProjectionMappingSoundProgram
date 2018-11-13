@@ -190,6 +190,19 @@ namespace ProjectionMapping
             glControl1.SwapBuffers();
         }
 
-        
+        //徐々に背景色（白）に戻る
+        public void backBaseColor()
+        {
+            Console.WriteLine("back...");
+
+            if (RGBA[0] < 1.0) { RGBA[0] += (5 / 255.0); }
+            if (RGBA[1] < 1.0) { RGBA[1] += (5 / 255.0); }
+            if (RGBA[2] < 1.0) { RGBA[2] += (5 / 255.0); }
+
+            Console.WriteLine("R : " + RGBA[0] +
+                             " G : " + RGBA[1] +
+                             " B : " + RGBA[2]);
+        }
+
     }
 }
