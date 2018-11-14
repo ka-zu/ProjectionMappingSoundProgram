@@ -54,6 +54,8 @@ namespace ProjectionMapping
             window2FromTxt();
             window3FromTxt();
             window4FromTxt();
+
+            
         }
 
         private void glControl1_Load(object sender, EventArgs e)
@@ -339,9 +341,9 @@ namespace ProjectionMapping
         {
             Console.WriteLine("back...");
 
-            if (RGBA[0] < 1.0) { RGBA[0] += (5 / 255.0); }
-            if (RGBA[1] < 1.0) { RGBA[1] += (5 / 255.0); }
-            if (RGBA[2] < 1.0) { RGBA[2] += (5 / 255.0); }
+            if (RGBA[0] < 1.0) { RGBA[0] += (7 / 255.0); }
+            if (RGBA[1] < 1.0) { RGBA[1] += (7 / 255.0); }
+            if (RGBA[2] < 1.0) { RGBA[2] += (7 / 255.0); }
 
             Console.WriteLine("R : " + RGBA[0] +
                              " G : " + RGBA[1] +

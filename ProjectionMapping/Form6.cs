@@ -50,7 +50,8 @@ namespace ProjectionMapping
 
         private void glControl1_Load(object sender, EventArgs e)
         {
-            
+            //GL.Enable(EnableCap.Blend);
+            //GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
         }
 
         private void glControl1_Paint(object sender, PaintEventArgs e)
@@ -157,6 +158,9 @@ namespace ProjectionMapping
         /// </summary>
         private void drawPolygon()
         {
+
+            
+
             GL.Color4(RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
 
             for (int i = 0; i < winLists.Length; i++)
@@ -195,9 +199,9 @@ namespace ProjectionMapping
         {
             Console.WriteLine("back...");
 
-            if (RGBA[0] < 1.0) { RGBA[0] += (5 / 255.0); }
-            if (RGBA[1] < 1.0) { RGBA[1] += (5 / 255.0); }
-            if (RGBA[2] < 1.0) { RGBA[2] += (5 / 255.0); }
+            if (RGBA[0] < 1.0) { RGBA[0] += (7 / 255.0); }
+            if (RGBA[1] < 1.0) { RGBA[1] += (7 / 255.0); }
+            if (RGBA[2] < 1.0) { RGBA[2] += (7 / 255.0); }
 
             Console.WriteLine("R : " + RGBA[0] +
                              " G : " + RGBA[1] +

@@ -45,6 +45,8 @@ namespace ProjectionMapping
             makeListInstance();
 
             windowsFromTxt();
+
+            
         }
 
 
@@ -56,7 +58,7 @@ namespace ProjectionMapping
         private void glControl1_Paint(object sender, PaintEventArgs e)
         {
             //消去
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            //GL.Clear(ClearBufferMask.ColorBufferBit);
 
             /*//なにか表示しないと透明になる
             GL.Begin(BeginMode.Lines);
@@ -159,9 +161,13 @@ namespace ProjectionMapping
         {
             GL.Color4(RGBA[0], RGBA[1], RGBA[2], RGBA[3]);
 
+            //window5だけきれいに描画されないので、
+            //一回真ん中に点を打って周りの頂点を打っていく
+
             for (int i = 0; i < winLists.Length; i++)
             {
-                GL.Begin(BeginMode.Polygon);
+
+                GL.Begin(BeginMode.TriangleFan);
 
                 foreach (Point p in winLists[i])
                 {
@@ -195,9 +201,9 @@ namespace ProjectionMapping
         {
             Console.WriteLine("back...");
 
-            if (RGBA[0] < 1.0) { RGBA[0] += (5 / 255.0); }
-            if (RGBA[1] < 1.0) { RGBA[1] += (5 / 255.0); }
-            if (RGBA[2] < 1.0) { RGBA[2] += (5 / 255.0); }
+            if (RGBA[0] < 1.0) { RGBA[0] += (7 / 255.0); }
+            if (RGBA[1] < 1.0) { RGBA[1] += (7 / 255.0); }
+            if (RGBA[2] < 1.0) { RGBA[2] += (7 / 255.0); }
 
             Console.WriteLine("R : " + RGBA[0] +
                              " G : " + RGBA[1] +
