@@ -19,14 +19,15 @@ namespace ProjectionMapping
         public float lineWidth = 30;
 
         //縦線の数(表示する周波数の範囲)
-        const int LINE_NUM = 40;
+        public int lineNum = 40;
 
         //外部から受け取るようの値
         public double maxHz = 0;//最大周波数
         public double maxPower = 0;//最大周波数のパワー
         public double sumHist = 0;//ヒストグラムの合計値
-        public double[] HzHist;
-
+        public double[] HzHist;//周波数ヒストグラムの格納配列
+        public bool increaseBarMode = false;
+        private int maxHzToBar = 0;//バーを増やすため　今までの最大周波数
         
         //線の色用　初期値はHSVのH=0に合わせる（赤）
         //RGBA色
@@ -93,21 +94,19 @@ namespace ProjectionMapping
         //一定の間隔・長さのラインを引く
         private void drawLines()
         {
-            //引くラインの数
-            int num = LINE_NUM;
             //ライン間のマージン
             int margin = (int)lineWidth + 5;
             //ラインの長さ
             int len = 50;
             //ラインの左端の位置座標　-1 * 太さ * (ラインの数/2)
-            double left = -((num-1)/2.0)*margin;
+            double left = -((lineNum-1)/2.0)*margin;
 
             //波打つように表示するテスト用
-            double[] sin = new double[LINE_NUM];
+            /*double[] sin = new double[lineNum];
             for(int i =0; i < sin.Length; i++)
             {
                 sin[i] = 50 * Math.Sin((i * 10) * Math.PI / 180);
-            }
+            }*/
 
             //GL.Color4(OpenTK.Graphics.Color4.Red);
             //GL.Color4(1.0,0,0,1.0);
@@ -127,7 +126,7 @@ namespace ProjectionMapping
             GL.End();*/
 
             //ラインの太さ上限が小さかったので四角で描く
-            for (int i = 0; i < num; i++)
+            for (int i = 0; i < lineNum; i++)
             {
                 GL.Begin(BeginMode.Polygon);
 
@@ -197,6 +196,18 @@ namespace ProjectionMapping
             maxHz = hz;
             maxPower = pow;
             sumHist = sum;
+
+            //バーが増えるモード
+            //600Hzで20本のバーになるように増やしていく（減らない）
+            //                     今までよりバーが増えるHzだったら
+            Console.WriteLine("mode =" + increaseBarMode + " pow ="+maxPower);
+            Console.WriteLine("maxTo =" + maxHzToBar + " maxHz" + maxHz);
+            if (increaseBarMode && maxHzToBar < maxHz && maxPower > 15)
+            {
+                maxHzToBar = (int)maxHz;
+                lineNum = (int)((18 / 600.0) * maxHz) + 2;
+                Console.WriteLine("increase LineNum =" + lineNum);
+            }
         }
 
         //親フォームから周波数ヒストグラムを受け取る
