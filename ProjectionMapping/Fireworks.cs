@@ -25,6 +25,9 @@ namespace ProjectionMapping
         //R:赤 0~1.0 G:緑 0~1.0 B:青 0~1.0 A:透明度 0~1.0s
         public double[] RGBA = { 1.0, 0.0, 0.0, 1.0 };
 
+        //パーティクルの寿命
+        private int lifeTime = 50;
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -57,6 +60,8 @@ namespace ProjectionMapping
             RGBA[1] = rnd.NextDouble();
             RGBA[2] = rnd.NextDouble();
 
+            lifeTime = rnd.Next(50) + 20;
+
             GL.PointSize(5);
 
         }
@@ -71,7 +76,7 @@ namespace ProjectionMapping
         public void count()
         {
 
-            if (t < 50)
+            if (t < lifeTime)
             {
                 t+=1;
             }
