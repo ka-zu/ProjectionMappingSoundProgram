@@ -16,7 +16,7 @@ namespace ProjectionMapping
     public partial class Form3 : Form
     {
         //ラインの太さ
-        public float lineWidth = 30;
+        public float lineWidth = 35;
 
         //縦線の数(表示する周波数の範囲)
         public int lineNum = 40;
@@ -43,8 +43,10 @@ namespace ProjectionMapping
 
         //花火パーティクルを複数生成できるようにするためのリスト
         List<Fireworks> fList = new List<Fireworks>();
-
-        double t = 0;
+        //波紋パーティクル
+        List<Ripple> ripList = new List<Ripple>();
+        //パーティクルタイマー
+        int pt = 10;
 
         public Form3()
         {
@@ -59,6 +61,9 @@ namespace ProjectionMapping
 
             //テクスチャを使えるように
             GL.Enable(EnableCap.Texture2D);
+
+            //GL.ClearColor(OpenTK.Graphics.Color4.White);
+            GL.ClearColor(glControl1.BackColor);
 
             reshape(glControl1.Width, glControl1.Height);
 
@@ -132,8 +137,8 @@ namespace ProjectionMapping
 
                 GL.Vertex2(left + (i * margin), -100);//左下
                 GL.Vertex2(left + (i * margin) + lineWidth, -100);//右下
-                GL.Vertex2(left + (i * margin) + lineWidth, 5 * HzHist[i] - 100);//右上
-                GL.Vertex2(left + (i * margin), 5 * HzHist[i] - 100);//左上
+                GL.Vertex2(left + (i * margin) + lineWidth, 10 * HzHist[i] - 100);//右上
+                GL.Vertex2(left + (i * margin), 10 * HzHist[i] - 100);//左上
 
                 GL.End();
 
@@ -158,7 +163,7 @@ namespace ProjectionMapping
             //
             glControl1.MakeCurrent();
 
-            drawBackGround();
+            //drawBackGround();
             drawLines();
             
 
@@ -169,8 +174,9 @@ namespace ProjectionMapping
         //外部から画面を更新する
         public void refresh()
         {
-
+            
             generateParticle();
+
 
             //
             //複数ウィンドウを処理するのに必須！！！！！OpenGL処理を自分に回す
@@ -183,6 +189,8 @@ namespace ProjectionMapping
             drawBackGround();
             drawLines();
             drawParticle();
+
+            //drawCircle();
 
             //表示
             glControl1.SwapBuffers();
@@ -316,21 +324,25 @@ namespace ProjectionMapping
         //音をチェックしてパーティクルを生み出す
         private void generateParticle()
         {
-            
-
             if(sumHist >50)
             {
-                fList.Add(new Fireworks(rnd.Next(-glControl1.Width/2+300, glControl1.Width / 2-300), 100, rnd));
-                Console.WriteLine("generate now : " + fList.Count());
+                fList.Add(new Fireworks(rnd.Next(-glControl1.Width/2+300, glControl1.Width / 2-300), rnd.Next(0, glControl1.Width / 2), rnd));
+                //Console.WriteLine("generate now : " + fList.Count());
+                ripList.Add(new Ripple(rnd.Next(-glControl1.Width / 2 + 300, glControl1.Width / 2 - 300), rnd.Next(0, glControl1.Width / 2), rnd, glControl1.BackColor));
             }
         }
 
         //パーティクルを描く
         private void drawParticle()
         {
-            foreach(Fireworks fw in fList)
+            foreach (Ripple rip in ripList)
+            {
+                rip.draw();
+            }
+            foreach (Fireworks fw in fList)
             {
                 fw.draw();
+
             }
         }
 
@@ -339,6 +351,26 @@ namespace ProjectionMapping
         {
             //存在しなくなったものを消すラムダ式
             fList.RemoveAll(fw => fw.isExist == false);
+            ripList.RemoveAll(rip => rip.isExist == false);
+
+        }
+
+        //円を描くテスト
+        private void drawCircle()
+        {
+            int num = 30;//角の数
+            double theta = 360 / num;//num角形の角度
+            int r = 50;//半径
+
+            GL.Begin(BeginMode.TriangleFan);
+
+            GL.Vertex2(100, 100);
+
+            for (int i = 0; i <= num; i++)
+                GL.Vertex2(r * Math.Sin(i * theta * Math.PI / 180) + 100, r * Math.Cos(i * theta * Math.PI / 180) + 100);
+
+            GL.End();
+
         }
 
     }
