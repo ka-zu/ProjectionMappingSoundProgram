@@ -58,6 +58,10 @@
             this.rightLocationY = new System.Windows.Forms.TextBox();
             this.rightLocationX = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.threholtTxtBox = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -252,7 +256,7 @@
             // 
             // upLocationX
             // 
-            this.upLocationX.Location = new System.Drawing.Point(463, 229);
+            this.upLocationX.Location = new System.Drawing.Point(498, 282);
             this.upLocationX.Name = "upLocationX";
             this.upLocationX.Size = new System.Drawing.Size(88, 19);
             this.upLocationX.TabIndex = 17;
@@ -261,7 +265,7 @@
             // 
             // upLocationY
             // 
-            this.upLocationY.Location = new System.Drawing.Point(557, 229);
+            this.upLocationY.Location = new System.Drawing.Point(592, 282);
             this.upLocationY.Name = "upLocationY";
             this.upLocationY.Size = new System.Drawing.Size(88, 19);
             this.upLocationY.TabIndex = 18;
@@ -271,7 +275,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(461, 202);
+            this.label6.Location = new System.Drawing.Point(496, 255);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(107, 24);
             this.label6.TabIndex = 19;
@@ -280,7 +284,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(461, 251);
+            this.label7.Location = new System.Drawing.Point(496, 304);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(107, 24);
             this.label7.TabIndex = 20;
@@ -288,7 +292,7 @@
             // 
             // bottomLocationX
             // 
-            this.bottomLocationX.Location = new System.Drawing.Point(463, 278);
+            this.bottomLocationX.Location = new System.Drawing.Point(498, 331);
             this.bottomLocationX.Name = "bottomLocationX";
             this.bottomLocationX.Size = new System.Drawing.Size(88, 19);
             this.bottomLocationX.TabIndex = 21;
@@ -297,7 +301,7 @@
             // 
             // bottomLocationY
             // 
-            this.bottomLocationY.Location = new System.Drawing.Point(557, 278);
+            this.bottomLocationY.Location = new System.Drawing.Point(592, 331);
             this.bottomLocationY.Name = "bottomLocationY";
             this.bottomLocationY.Size = new System.Drawing.Size(88, 19);
             this.bottomLocationY.TabIndex = 22;
@@ -306,7 +310,7 @@
             // 
             // leftLocationY
             // 
-            this.leftLocationY.Location = new System.Drawing.Point(557, 327);
+            this.leftLocationY.Location = new System.Drawing.Point(592, 380);
             this.leftLocationY.Name = "leftLocationY";
             this.leftLocationY.Size = new System.Drawing.Size(88, 19);
             this.leftLocationY.TabIndex = 25;
@@ -315,7 +319,7 @@
             // 
             // leftLocationX
             // 
-            this.leftLocationX.Location = new System.Drawing.Point(463, 327);
+            this.leftLocationX.Location = new System.Drawing.Point(498, 380);
             this.leftLocationX.Name = "leftLocationX";
             this.leftLocationX.Size = new System.Drawing.Size(88, 19);
             this.leftLocationX.TabIndex = 24;
@@ -325,7 +329,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(461, 300);
+            this.label8.Location = new System.Drawing.Point(496, 353);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(107, 24);
             this.label8.TabIndex = 23;
@@ -333,7 +337,7 @@
             // 
             // rightLocationY
             // 
-            this.rightLocationY.Location = new System.Drawing.Point(557, 376);
+            this.rightLocationY.Location = new System.Drawing.Point(592, 429);
             this.rightLocationY.Name = "rightLocationY";
             this.rightLocationY.Size = new System.Drawing.Size(88, 19);
             this.rightLocationY.TabIndex = 28;
@@ -342,7 +346,7 @@
             // 
             // rightLocationX
             // 
-            this.rightLocationX.Location = new System.Drawing.Point(463, 376);
+            this.rightLocationX.Location = new System.Drawing.Point(498, 429);
             this.rightLocationX.Name = "rightLocationX";
             this.rightLocationX.Size = new System.Drawing.Size(88, 19);
             this.rightLocationX.TabIndex = 27;
@@ -352,17 +356,58 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(461, 349);
+            this.label9.Location = new System.Drawing.Point(496, 402);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(107, 24);
             this.label9.TabIndex = 26;
             this.label9.Text = "右画面の座標\r\nX　　　　　　　　　　　Y";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(496, 175);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(140, 12);
+            this.label10.TabIndex = 29;
+            this.label10.Text = "色変えのタイミングのしきい値";
+            // 
+            // threholtTxtBox
+            // 
+            this.threholtTxtBox.Location = new System.Drawing.Point(498, 190);
+            this.threholtTxtBox.Name = "threholtTxtBox";
+            this.threholtTxtBox.Size = new System.Drawing.Size(88, 19);
+            this.threholtTxtBox.TabIndex = 30;
+            this.threholtTxtBox.Text = "0";
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("MS UI Gothic", 9F);
+            this.button6.Location = new System.Drawing.Point(592, 190);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(61, 30);
+            this.button6.TabIndex = 31;
+            this.button6.Text = "決定";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(496, 212);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(23, 12);
+            this.label11.TabIndex = 32;
+            this.label11.Text = "今：";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 552);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.button6);
+            this.Controls.Add(this.threholtTxtBox);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.rightLocationY);
             this.Controls.Add(this.rightLocationX);
             this.Controls.Add(this.label9);
@@ -434,6 +479,10 @@
         private System.Windows.Forms.TextBox rightLocationY;
         private System.Windows.Forms.TextBox rightLocationX;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox threholtTxtBox;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Label label11;
     }
 }
 

@@ -91,6 +91,9 @@ namespace ProjectionMapping
         //周波数ヒストグラムの合計（全体的な音の大きさ）
         double sumHist = 0;
 
+        //色変えのしきい値
+        int histThreshold = 50;
+
         //一度の表示する点の数
         int samplingNum = 256;
 
@@ -131,7 +134,7 @@ namespace ProjectionMapping
         List<float> _recorded = new List<float>(); //波形用
         List<float> _recorded2 = new List<float>(); //周波数ヒストグラム用
 
-        const int COLOR_TIMER = 0;
+        const int COLOR_TIMER = 20;
 
         //色を変えるタイミング用変数 ゼロになったら変える
         int colorChangeTime1 = COLOR_TIMER;
@@ -146,13 +149,20 @@ namespace ProjectionMapping
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (File.Exists(@"./windowLocation.txt"))
+            if (File.Exists(@"./setting.txt"))
             {
                 //フォーム表示座標の読み込み
-                using (var rea = new StreamReader(@"./windowLocation.txt"))
+                using (var rea = new StreamReader(@"./setting.txt"))
                 {
                     String str = null;
                     //一行読み込み
+
+                    //ヒストグラムのしきい値
+                    str = rea.ReadLine();
+                    threholtTxtBox.Text = str;
+                    histThreshold = int.Parse(str);
+                    label11.Text = "今：" + histThreshold;
+                    //窓の座標
                     str = rea.ReadLine();
                     upLocationX.Text = str;
                     str = rea.ReadLine();
@@ -198,8 +208,9 @@ namespace ProjectionMapping
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            using (var wri = new StreamWriter(@"./windowLocation.txt", false))
+            using (var wri = new StreamWriter(@"./setting", false))
             {
+                wri.WriteLine(threholtTxtBox.Text);
                 wri.WriteLine(upLocationX.Text);
                 wri.WriteLine(upLocationY.Text);
                 wri.WriteLine(bottomLocationX.Text);
@@ -220,7 +231,13 @@ namespace ProjectionMapping
             f2.Show();
         }
 
-        
+        private void button6_Click(object sender, EventArgs e)
+        {
+            histThreshold = int.Parse(threholtTxtBox.Text);
+            label11.Text = "今：" + histThreshold;
+        }
+
+
         private void button2_Click(object sender, EventArgs e)
         {
             //バー画面を開く
@@ -455,23 +472,27 @@ namespace ProjectionMapping
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime2 == 0 && sumHist >= 50)
+                    if (colorChangeTime2 == 0)
                     {
-                        f4.RGBA[0] = f3.RGBA[0];
-                        f4.RGBA[1] = f3.RGBA[1];
-                        f4.RGBA[2] = f3.RGBA[2];
+                        if (sumHist > histThreshold)
+                        {
+                            f4.RGBA[0] = f3.RGBA[0];
+                            f4.RGBA[1] = f3.RGBA[1];
+                            f4.RGBA[2] = f3.RGBA[2];
 
-                        colorChangeTime2 = COLOR_TIMER;
+                            colorChangeTime2 = COLOR_TIMER;
+                        }
                     }
                     else
                     {
                         f4.backBaseColor();
-                        //colorChangeTime2--;
+                        colorChangeTime2--;
                     }
 
                     //フォームが閉じられていたらしない
                     if (f4.IsDisposed == true)
-                    { isForm4Open = false;
+                    {
+                        isForm4Open = false;
                     }
                     else
                     {
@@ -485,18 +506,25 @@ namespace ProjectionMapping
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime3 == 0 && sumHist >= 50)
+                    if (colorChangeTime3 == 0)
                     {
-                        f5.RGBA[0] = f3.RGBA[0];
-                        f5.RGBA[1] = f3.RGBA[1];
-                        f5.RGBA[2] = f3.RGBA[2];
+                        if (sumHist > histThreshold)
+                        {
+                            f5.RGBA[0] = f3.RGBA[0];
+                            f5.RGBA[1] = f3.RGBA[1];
+                            f5.RGBA[2] = f3.RGBA[2];
 
-                        colorChangeTime3 = COLOR_TIMER;
+                            colorChangeTime3 = COLOR_TIMER;
+                        }
+                        else
+                        {
+                            f5.backBaseColor();
+                        }
                     }
                     else
                     {
                         f5.backBaseColor();
-                        //colorChangeTime3--;
+                        colorChangeTime3--;
                     }
 
                     //フォームが閉じられていたらしない
@@ -516,18 +544,25 @@ namespace ProjectionMapping
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime4 == 0 && sumHist >= 50)
+                    if (colorChangeTime4 == 0)//タイマーがゼロになったら待ち
                     {
-                        f6.RGBA[0] = f3.RGBA[0];
-                        f6.RGBA[1] = f3.RGBA[1];
-                        f6.RGBA[2] = f3.RGBA[2];
+                        if (sumHist > histThreshold)//更に音が大きくなったら
+                        {
+                            f6.RGBA[0] = f3.RGBA[0];
+                            f6.RGBA[1] = f3.RGBA[1];
+                            f6.RGBA[2] = f3.RGBA[2];
 
-                        colorChangeTime4 = COLOR_TIMER;
+                            colorChangeTime4 = COLOR_TIMER;
+                        }
+                        else
+                        {
+                            f6.backBaseColor();
+                        }
                     }
                     else
                     {
                         f6.backBaseColor();
-                        //colorChangeTime4--;
+                        colorChangeTime4--;
                     }
 
                     //フォームが閉じられていたらしない
