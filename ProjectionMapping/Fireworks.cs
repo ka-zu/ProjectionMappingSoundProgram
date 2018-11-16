@@ -48,7 +48,7 @@ namespace ProjectionMapping
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="tick">Environment.Tickcountを入れる</param>
+        /// <param name="rnd"></param>
         public Fireworks(int x, int y, Random rnd)
         {
 
@@ -90,9 +90,6 @@ namespace ProjectionMapping
         //描く部分
         public void draw()
         {
-            //カウンターを進める
-            count();
-
             //Console.WriteLine(t);
 
             //存在してないなら描かない
@@ -114,6 +111,9 @@ namespace ProjectionMapping
             GL.Vertex2(p.X - t, p.Y - t);
 
             GL.End();
+
+            //カウンターを進める
+            count();
         }       
 
     }
