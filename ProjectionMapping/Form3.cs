@@ -41,10 +41,15 @@ namespace ProjectionMapping
         //パーティクルを表示する座標を格納する乱数
         Random rnd = new Random();
 
+        //パーティクル切り替え変数
+        short particleSwitch = 0;
         //花火パーティクルを複数生成できるようにするためのリスト
         List<Fireworks> fList = new List<Fireworks>();
         //波紋パーティクル
         List<Ripple> ripList = new List<Ripple>();
+        //丸い花火パーティクル
+        List<CircleFireworks> cfwList = new List<CircleFireworks>();
+
         //パーティクルタイマー
         int pt = 10;
 
@@ -137,8 +142,8 @@ namespace ProjectionMapping
 
                 GL.Vertex2(left + (i * margin), -100);//左下
                 GL.Vertex2(left + (i * margin) + lineWidth, -100);//右下
-                GL.Vertex2(left + (i * margin) + lineWidth, 10 * HzHist[i] - 100);//右上
-                GL.Vertex2(left + (i * margin), 10 * HzHist[i] - 100);//左上
+                GL.Vertex2(left + (i * margin) + lineWidth, 5 * HzHist[i] - 100);//右上
+                GL.Vertex2(left + (i * margin), 5 * HzHist[i] - 100);//左上
 
                 GL.End();
 
@@ -206,15 +211,18 @@ namespace ProjectionMapping
             sumHist = sum;
 
             //バーが増えるモード
-            //600Hzで20本のバーになるように増やしていく（減らない）
-            //                     今までよりバーが増えるHzだったら
-            Console.WriteLine("mode =" + increaseBarMode + " pow ="+maxPower);
-            Console.WriteLine("maxTo =" + maxHzToBar + " maxHz" + maxHz);
-            if (increaseBarMode && maxHzToBar < maxHz && maxPower > 15)
+            //600Hzで20本のバーになるように増やしていく（減らない） 
+            if (increaseBarMode)
             {
-                maxHzToBar = (int)maxHz;
-                lineNum = (int)((18 / 600.0) * maxHz) + 2;
-                Console.WriteLine("increase LineNum =" + lineNum);
+                Console.WriteLine("mode =" + increaseBarMode + " pow =" + maxPower);
+                Console.WriteLine("maxTo =" + maxHzToBar + " maxHz" + maxHz);
+                //今までよりバーが増えるHzだったら
+                if (maxHzToBar < maxHz && maxPower > 15)
+                {
+                    maxHzToBar = (int)maxHz;
+                    lineNum = (int)((18 / 600.0) * maxHz) + 2;
+                    Console.WriteLine("increase LineNum =" + lineNum);
+                }
             }
         }
 
@@ -321,14 +329,37 @@ namespace ProjectionMapping
             
         }
 
+        //
+        //パーティクル
+        //
+
         //音をチェックしてパーティクルを生み出す
         private void generateParticle()
         {
-            if(sumHist >50)
+            if (sumHist > 50)
             {
-                fList.Add(new Fireworks(rnd.Next(-glControl1.Width/2+300, glControl1.Width / 2-300), rnd.Next(0, glControl1.Width / 2), rnd));
-                //Console.WriteLine("generate now : " + fList.Count());
-                ripList.Add(new Ripple(rnd.Next(-glControl1.Width / 2 + 300, glControl1.Width / 2 - 300), rnd.Next(0, glControl1.Width / 2), rnd, glControl1.BackColor));
+                switch (particleSwitch) {
+                    case 0:
+                        fList.Add(new Fireworks(rnd.Next(-glControl1.Width / 2 + 100, glControl1.Width / 2 - 100), rnd.Next(0, glControl1.Width / 2), rnd));
+                        //Console.WriteLine("generate now : " + fList.Count());
+                        particleSwitch++;         
+                        break;
+                    case 1:
+                        ripList.Add(new Ripple(rnd.Next(-glControl1.Width / 2 + 100, glControl1.Width / 2 - 100), rnd.Next(0, glControl1.Width / 2), rnd, glControl1.BackColor));
+                        particleSwitch++;
+                        break;
+
+                    case 2:
+                        cfwList.Add(new CircleFireworks(rnd.Next(-glControl1.Width / 2 + 100, glControl1.Width / 2 - 100), rnd.Next(0, glControl1.Width / 2), 50, 20, rnd));
+                        particleSwitch++;
+                        break;
+
+                    default:
+                        particleSwitch = 0;
+                        break;
+                }
+                Console.WriteLine("switch = " + particleSwitch);
+
             }
         }
 
@@ -342,7 +373,13 @@ namespace ProjectionMapping
             foreach (Fireworks fw in fList)
             {
                 fw.draw();
+                
+            }
 
+            foreach (CircleFireworks cfw in cfwList)
+            {
+                //Console.WriteLine("draw cfw");
+                cfw.draw();
             }
         }
 
@@ -352,6 +389,7 @@ namespace ProjectionMapping
             //存在しなくなったものを消すラムダ式
             fList.RemoveAll(fw => fw.isExist == false);
             ripList.RemoveAll(rip => rip.isExist == false);
+            cfwList.RemoveAll(cfw => cfw.isExist == false);
 
         }
 
