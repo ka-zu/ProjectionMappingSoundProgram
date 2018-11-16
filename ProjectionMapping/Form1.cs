@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Numerics;//Conplex型用
+using System.IO;
 
 /*
  * NAudioの入れ方
@@ -67,10 +68,10 @@ namespace ProjectionMapping
 {
     public partial class Form1 : Form
     {
-        Form3 f3 = new Form3();
-        Form4 f4 = new Form4();
-        Form5 f5 = new Form5();
-        Form6 f6 = new Form6();
+        Form3 f3 = null;
+        Form4 f4 = null;
+        Form5 f5 = null;
+        Form6 f6 = null;
 
         WaveIn waveIn;
 
@@ -145,8 +146,35 @@ namespace ProjectionMapping
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (File.Exists(@"./windowLocation.txt"))
+            {
+                //フォーム表示座標の読み込み
+                using (var rea = new StreamReader(@"./windowLocation.txt"))
+                {
+                    String str = null;
+                    //一行読み込み
+                    str = rea.ReadLine();
+                    upLocationX.Text = str;
+                    str = rea.ReadLine();
+                    upLocationY.Text = str;
+                    str = rea.ReadLine();
+                    bottomLocationX.Text = str;
+                    str = rea.ReadLine();
+                    bottomLocationY.Text = str;
+                    str = rea.ReadLine();
+                    leftLocationX.Text = str;
+                    str = rea.ReadLine();
+                    leftLocationY.Text = str;
+                    str = rea.ReadLine();
+                    rightLocationX.Text = str;
+                    str = rea.ReadLine();
+                    rightLocationY.Text = str;
+
+                }
+            }
+
             //デバイスを探して表示
-            for(int i=0; i<WaveIn.DeviceCount; i++)
+            for (int i=0; i<WaveIn.DeviceCount; i++)
             {
                 var deviceInfo = WaveIn.GetCapabilities(i);
                 this.label1.Text = String.Format("Device {0}: {1}, {2} cannels",
@@ -168,6 +196,21 @@ namespace ProjectionMapping
             waveIn.StartRecording();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            using (var wri = new StreamWriter(@"./windowLocation.txt", false))
+            {
+                wri.WriteLine(upLocationX.Text);
+                wri.WriteLine(upLocationY.Text);
+                wri.WriteLine(bottomLocationX.Text);
+                wri.WriteLine(bottomLocationY.Text);
+                wri.WriteLine(leftLocationX.Text);
+                wri.WriteLine(leftLocationY.Text);
+                wri.WriteLine(rightLocationX.Text);
+                wri.WriteLine(rightLocationY.Text);
+            }
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             //画像に合わせて線をクリックでなぞる画面
@@ -180,7 +223,16 @@ namespace ProjectionMapping
         
         private void button2_Click(object sender, EventArgs e)
         {
-            //線を引く画面を開く
+            //バー画面を開く
+            f3 = new Form3();
+            f3.Location = new Point(int.Parse(this.bottomLocationX.Text), int.Parse(this.bottomLocationY.Text));
+
+
+            if (radioButton4.Checked)//バーが増えていくモードなら
+            {
+                f3.lineNum = 2;
+                f3.increaseBarMode = true;
+            }
 
             isForm3Open = true;
             f3.setFFTHist(fftNum);
@@ -192,6 +244,9 @@ namespace ProjectionMapping
         {
             //上投影画面
 
+            f4 = new Form4();
+            f4.Location = new Point(int.Parse(this.upLocationX.Text), int.Parse(this.upLocationY.Text));
+
             isForm4Open = true;
             f4.Show();
         }
@@ -200,6 +255,9 @@ namespace ProjectionMapping
         {
             //左画面
 
+            f5 = new Form5();
+            f5.Location = new Point(int.Parse(this.leftLocationX.Text), int.Parse(this.leftLocationY.Text));
+
             isForm5Open = true;
             f5.Show();
 
@@ -207,7 +265,10 @@ namespace ProjectionMapping
 
         private void button5_Click(object sender, EventArgs e)
         {
-            //左画面
+            //右画面
+
+            f6 = new Form6();
+            f6.Location = new Point(int.Parse(this.rightLocationX.Text), int.Parse(this.rightLocationY.Text));
 
             isForm6Open = true;
             f6.Show();
@@ -222,6 +283,8 @@ namespace ProjectionMapping
         {
 
         }
+
+        
 
         //******
         //******自作関数
@@ -388,11 +451,11 @@ namespace ProjectionMapping
                 }
 
                 //上窓表示画面に書き込み
-                if (isForm4Open == true)
+                if (isForm4Open && isForm3Open)
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime2 == 0)
+                    if (colorChangeTime2 == 0 && sumHist >= 50)
                     {
                         f4.RGBA[0] = f3.RGBA[0];
                         f4.RGBA[1] = f3.RGBA[1];
@@ -403,7 +466,7 @@ namespace ProjectionMapping
                     else
                     {
                         f4.backBaseColor();
-                        colorChangeTime2--;
+                        //colorChangeTime2--;
                     }
 
                     //フォームが閉じられていたらしない
@@ -418,11 +481,11 @@ namespace ProjectionMapping
                 }
 
                 //左窓表示画面に書き込み
-                if (isForm5Open == true)
+                if (isForm5Open && isForm3Open)
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime3 == 0)
+                    if (colorChangeTime3 == 0 && sumHist >= 50)
                     {
                         f5.RGBA[0] = f3.RGBA[0];
                         f5.RGBA[1] = f3.RGBA[1];
@@ -432,7 +495,8 @@ namespace ProjectionMapping
                     }
                     else
                     {
-                        colorChangeTime3--;
+                        f5.backBaseColor();
+                        //colorChangeTime3--;
                     }
 
                     //フォームが閉じられていたらしない
@@ -448,11 +512,11 @@ namespace ProjectionMapping
                 }
 
                 //右窓表示画面に書き込み
-                if (isForm6Open == true)
+                if (isForm6Open && isForm3Open)
                 {
 
                     //色変えタイミング
-                    if (colorChangeTime4 == 0)
+                    if (colorChangeTime4 == 0 && sumHist >= 50)
                     {
                         f6.RGBA[0] = f3.RGBA[0];
                         f6.RGBA[1] = f3.RGBA[1];
@@ -462,7 +526,8 @@ namespace ProjectionMapping
                     }
                     else
                     {
-                        colorChangeTime4--;
+                        f6.backBaseColor();
+                        //colorChangeTime4--;
                     }
 
                     //フォームが閉じられていたらしない
@@ -485,6 +550,22 @@ namespace ProjectionMapping
             }
 
 
+        }
+
+        //数字以外押せないように
+        private void onlyNumber(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if ('0' <= e.KeyChar && e.KeyChar <= '9')
+            {
+
+            }
+            else if (e.KeyChar == '\b')
+            {
+            }
+            else
+            {
+                e.Handled = true;
+            }
         }
 
         

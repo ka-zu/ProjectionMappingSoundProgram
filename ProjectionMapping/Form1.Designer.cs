@@ -39,10 +39,27 @@
             this.label5 = new System.Windows.Forms.Label();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.label6 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.upLocationX = new System.Windows.Forms.TextBox();
+            this.upLocationY = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.bottomLocationX = new System.Windows.Forms.TextBox();
+            this.bottomLocationY = new System.Windows.Forms.TextBox();
+            this.leftLocationY = new System.Windows.Forms.TextBox();
+            this.leftLocationX = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.rightLocationY = new System.Windows.Forms.TextBox();
+            this.rightLocationX = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
@@ -61,7 +78,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(89, 85);
             this.button2.TabIndex = 1;
-            this.button2.Text = "バー表示";
+            this.button2.Text = "バー表示\r\n(下画面)";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -140,7 +157,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(261, 47);
+            this.radioButton1.Location = new System.Drawing.Point(6, 17);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(83, 16);
             this.radioButton1.TabIndex = 9;
@@ -151,21 +168,12 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(261, 69);
+            this.radioButton2.Location = new System.Drawing.Point(6, 39);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(135, 16);
             this.radioButton2.TabIndex = 10;
             this.radioButton2.Text = "周波数ヒストグラム合計";
             this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(259, 32);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(80, 12);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "色を変える要素";
             // 
             // button3
             // 
@@ -197,17 +205,181 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.radioButton2);
+            this.groupBox1.Controls.Add(this.radioButton1);
+            this.groupBox1.Location = new System.Drawing.Point(261, 15);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(154, 58);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "色を変える要素";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.radioButton4);
+            this.groupBox2.Controls.Add(this.radioButton3);
+            this.groupBox2.Location = new System.Drawing.Point(261, 79);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(154, 59);
+            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "バーのモード";
+            // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(6, 40);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(123, 16);
+            this.radioButton4.TabIndex = 1;
+            this.radioButton4.TabStop = true;
+            this.radioButton4.Text = "最大周波数で増える";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Checked = true;
+            this.radioButton3.Location = new System.Drawing.Point(6, 19);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(89, 16);
+            this.radioButton3.TabIndex = 0;
+            this.radioButton3.TabStop = true;
+            this.radioButton3.Text = "最初から全部";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // upLocationX
+            // 
+            this.upLocationX.Location = new System.Drawing.Point(463, 229);
+            this.upLocationX.Name = "upLocationX";
+            this.upLocationX.Size = new System.Drawing.Size(88, 19);
+            this.upLocationX.TabIndex = 17;
+            this.upLocationX.Text = "0";
+            this.upLocationX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // upLocationY
+            // 
+            this.upLocationY.Location = new System.Drawing.Point(557, 229);
+            this.upLocationY.Name = "upLocationY";
+            this.upLocationY.Size = new System.Drawing.Size(88, 19);
+            this.upLocationY.TabIndex = 18;
+            this.upLocationY.Text = "0";
+            this.upLocationY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(461, 202);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(107, 24);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "上画面の座標\r\nX　　　　　　　　　　　Y";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(461, 251);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 24);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "下画面の座標\r\nX　　　　　　　　　　　Y";
+            // 
+            // bottomLocationX
+            // 
+            this.bottomLocationX.Location = new System.Drawing.Point(463, 278);
+            this.bottomLocationX.Name = "bottomLocationX";
+            this.bottomLocationX.Size = new System.Drawing.Size(88, 19);
+            this.bottomLocationX.TabIndex = 21;
+            this.bottomLocationX.Text = "0";
+            this.bottomLocationX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // bottomLocationY
+            // 
+            this.bottomLocationY.Location = new System.Drawing.Point(557, 278);
+            this.bottomLocationY.Name = "bottomLocationY";
+            this.bottomLocationY.Size = new System.Drawing.Size(88, 19);
+            this.bottomLocationY.TabIndex = 22;
+            this.bottomLocationY.Text = "0";
+            this.bottomLocationY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // leftLocationY
+            // 
+            this.leftLocationY.Location = new System.Drawing.Point(557, 327);
+            this.leftLocationY.Name = "leftLocationY";
+            this.leftLocationY.Size = new System.Drawing.Size(88, 19);
+            this.leftLocationY.TabIndex = 25;
+            this.leftLocationY.Text = "0";
+            this.leftLocationY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // leftLocationX
+            // 
+            this.leftLocationX.Location = new System.Drawing.Point(463, 327);
+            this.leftLocationX.Name = "leftLocationX";
+            this.leftLocationX.Size = new System.Drawing.Size(88, 19);
+            this.leftLocationX.TabIndex = 24;
+            this.leftLocationX.Text = "0";
+            this.leftLocationX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(461, 300);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(107, 24);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "左画面の座標\r\nX　　　　　　　　　　　Y";
+            // 
+            // rightLocationY
+            // 
+            this.rightLocationY.Location = new System.Drawing.Point(557, 376);
+            this.rightLocationY.Name = "rightLocationY";
+            this.rightLocationY.Size = new System.Drawing.Size(88, 19);
+            this.rightLocationY.TabIndex = 28;
+            this.rightLocationY.Text = "0";
+            this.rightLocationY.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // rightLocationX
+            // 
+            this.rightLocationX.Location = new System.Drawing.Point(463, 376);
+            this.rightLocationX.Name = "rightLocationX";
+            this.rightLocationX.Size = new System.Drawing.Size(88, 19);
+            this.rightLocationX.TabIndex = 27;
+            this.rightLocationX.Text = "0";
+            this.rightLocationX.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.onlyNumber);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(461, 349);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(107, 24);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "右画面の座標\r\nX　　　　　　　　　　　Y";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 552);
+            this.Controls.Add(this.rightLocationY);
+            this.Controls.Add(this.rightLocationX);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.leftLocationY);
+            this.Controls.Add(this.leftLocationX);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.bottomLocationY);
+            this.Controls.Add(this.bottomLocationX);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.upLocationY);
+            this.Controls.Add(this.upLocationX);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -219,7 +391,12 @@
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,10 +415,25 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton4;
+        private System.Windows.Forms.TextBox upLocationX;
+        private System.Windows.Forms.TextBox upLocationY;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox bottomLocationX;
+        private System.Windows.Forms.TextBox bottomLocationY;
+        private System.Windows.Forms.TextBox leftLocationY;
+        private System.Windows.Forms.TextBox leftLocationX;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox rightLocationY;
+        private System.Windows.Forms.TextBox rightLocationX;
+        private System.Windows.Forms.Label label9;
     }
 }
 
