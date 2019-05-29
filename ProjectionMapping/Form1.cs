@@ -602,8 +602,6 @@ namespace ProjectionMapping
                 e.Handled = true;
             }
         }
-
-        
     }
     
 }

@@ -48,6 +48,7 @@
             this.ClientSize = new System.Drawing.Size(1920, 1080);
             this.Controls.Add(this.glControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Location = new System.Drawing.Point(0, 0);
             this.Name = "Form4";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Form4";
