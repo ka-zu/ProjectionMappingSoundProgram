@@ -88,10 +88,10 @@
             // 
             // plotView1
             // 
-            this.plotView1.Location = new System.Drawing.Point(12, 175);
+            this.plotView1.Location = new System.Drawing.Point(12, 12);
             this.plotView1.Name = "plotView1";
             this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(328, 130);
+            this.plotView1.Size = new System.Drawing.Size(754, 528);
             this.plotView1.TabIndex = 2;
             this.plotView1.Text = "plotView1";
             this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -404,6 +404,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(778, 552);
+            this.Controls.Add(this.plotView1);
             this.Controls.Add(this.plotView2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.button6);
@@ -431,7 +432,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.plotView1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
