@@ -206,6 +206,12 @@ namespace ProjectionMapping
             waveIn.StartRecording();
         }
 
+
+        //
+        //
+        //
+        //
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             using (var wri = new StreamWriter(@"./setting", false))
