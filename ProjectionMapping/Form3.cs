@@ -60,6 +60,9 @@ namespace ProjectionMapping
 
         private void Form3_Load(object sender, EventArgs e)
         {
+            //初期位置
+            this.Location = new Point(1920, 0);
+
             //画面を消す
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
@@ -138,12 +141,14 @@ namespace ProjectionMapping
             //ラインの太さ上限が小さかったので四角で描く
             for (int i = 0; i < lineNum; i++)
             {
+                int heightMul = 15;//バーの高さにかけて高くする
+
                 GL.Begin(BeginMode.Polygon);
 
                 GL.Vertex2(left + (i * margin), -100);//左下
                 GL.Vertex2(left + (i * margin) + lineWidth, -100);//右下
-                GL.Vertex2(left + (i * margin) + lineWidth, 5 * HzHist[i] - 100);//右上
-                GL.Vertex2(left + (i * margin), 5 * HzHist[i] - 100);//左上
+                GL.Vertex2(left + (i * margin) + lineWidth, heightMul * HzHist[i] - 100);//右上
+                GL.Vertex2(left + (i * margin), heightMul * HzHist[i] - 100);//左上
 
                 GL.End();
 
@@ -193,7 +198,7 @@ namespace ProjectionMapping
 
             drawBackGround();
             drawLines();
-            drawParticle();
+            //drawParticle();
 
             //drawCircle();
 
